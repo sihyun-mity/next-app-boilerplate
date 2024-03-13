@@ -1,0 +1,33 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node-terminal",
+      "name": "Debug - Development",
+      "request": "launch",
+      "command": "npm run dev",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "node-terminal",
+      "name": "Debug - Production",
+      "request": "launch",
+      "command": "npm run dev-prod",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "node-terminal",
+      "name": "Build - Development",
+      "request": "launch",
+      "command": "npm run build-dev",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "node-terminal",
+      "name": "Build - Production",
+      "request": "launch",
+      "command": "npm run build-prod",
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}
