@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
-import { IMediaState } from '@/stores/mediaState/mediaState.type';
 import { MEDIA_STATE_DEFAULT_VALUE } from '@/stores/mediaState/mediaState.constant';
+import { IMediaState } from '@/stores';
 
 export const mediaState = atom<IMediaState>({
   key: 'mediaState',
