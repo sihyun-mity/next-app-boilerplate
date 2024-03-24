@@ -1,8 +1,8 @@
 'use client';
 
+import React from 'react';
 import { RecoilRoot } from 'recoil';
-import { ReactNode } from 'react';
 
-export default function RecoilClient({ children }: { children: ReactNode }) {
+export default function RecoilClient({ children }: { children: React.ReactNode }) {
   return <RecoilRoot>{children}</RecoilRoot>;
 }
