@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { ReactNode } from 'react';
-import '@/assets/styles/global.scss';
+import '@/styles/global.scss';
 import 'normalize.css';
 import { MobileDetector, RecoilClient } from '@/components';
 
