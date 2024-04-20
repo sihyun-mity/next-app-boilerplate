@@ -27,23 +27,13 @@ Visual Studio Code와 IntelliJ Idea용 사전 실행 구성이 있습니다.
 
 사전 설정된 프로파일을 선택하거나 아래 명령어를 터미널에 입력합니다.
 
-- 개발 환경 디버그
-  - Debug - Development
+- 디버그
+  - Debug
   - ```shell
     npm run dev
     ```
-- 운영 환경 디버그
-  - Debug - Production
+- 빌드
+  - Build
   - ```shell
-    npm run dev-prod
-    ```
-- 개발 환경 빌드
-  - Build - Development
-  - ```shell
-    npm run build-dev
-    ```
-- 개발 환경 빌드
-  - Build - Production
-  - ```shell
-    npm run build-prod
+    npm run build
     ```
