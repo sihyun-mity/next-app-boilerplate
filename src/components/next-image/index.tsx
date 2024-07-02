@@ -1,4 +1,4 @@
-import { type CSSProperties, useId, useMemo } from 'react';
+import { type CSSProperties, RefObject, useId, useMemo } from 'react';
 import type { Property } from 'csstype';
 import type { StaticImageData } from 'next/image';
 import Image from 'next/image';
@@ -7,31 +7,43 @@ import styles from './index.module.scss';
 interface Props {
   width?: Property.Width | number;
   height?: Property.Height | number;
+  maxWidth?: Property.MaxWidth | number;
+  maxHeight?: Property.MaxHeight | number;
+  minWidth?: Property.MinWidth | number;
+  minHeight?: Property.MinHeight | number;
   responsiveRatio?: Property.PaddingBottom;
   objectFit?: Property.ObjectFit;
   src?: string | StaticImageData;
   alt?: string;
   containerClass?: string;
+  containerStyle?: CSSProperties;
   imageStyle?: CSSProperties;
   fill?: boolean;
   priority?: boolean;
   unoptimized?: boolean;
   onClick?: () => void;
+  containerRef?: RefObject<HTMLDivElement> | null;
 }
 
 const Index = ({
   width = '100%',
   height = 'auto',
+  maxWidth,
+  maxHeight,
+  minWidth,
+  minHeight,
   responsiveRatio,
   objectFit = 'contain',
   src,
   alt = '',
   containerClass,
+  containerStyle,
   imageStyle,
   fill = !!responsiveRatio,
   priority = false,
   unoptimized,
   onClick,
+  containerRef,
 }: Props) => {
   const componentId = useId();
   const imageId = `next-image-${componentId}`;
@@ -70,7 +82,12 @@ const Index = ({
   }
 
   return (
-    <div className={containerClass} style={{ width, height }} onClick={onClick}>
+    <div
+      className={containerClass}
+      style={{ width, height, maxWidth, maxHeight, minWidth, minHeight, ...containerStyle }}
+      onClick={onClick}
+      ref={containerRef}
+    >
       <div className={styles.imageBox} style={{ paddingBottom: responsiveRatio }}>
         {responsiveRatio ? <picture className={styles.responsiveBox}>{element}</picture> : element}
       </div>
