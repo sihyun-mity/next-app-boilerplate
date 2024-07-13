@@ -1,2 +1,2 @@
-export * from './isMobileState';
-export * from './mediaState';
+export * from './mobile-state';
+export * from './media-state';

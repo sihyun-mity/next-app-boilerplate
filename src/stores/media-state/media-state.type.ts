@@ -1,4 +1,4 @@
-export interface IMediaState {
+export interface MediaStateEntity {
   sm: boolean;
   md: boolean;
   lg: boolean;
