@@ -2,11 +2,10 @@
 
 import { ReactNode, useLayoutEffect } from 'react';
 import MobileDetect from 'mobile-detect';
-import { useSetRecoilState } from 'recoil';
-import { isMobileState } from '@/stores';
+import { useMobileStore } from '@/stores';
 
 const MobileDetector = ({ children }: { children: ReactNode }) => {
-  const setIsMobile = useSetRecoilState(isMobileState);
+  const { setIsMobile } = useMobileStore();
 
   useLayoutEffect(() => {
     const userAgent = new MobileDetect(window.navigator.userAgent),

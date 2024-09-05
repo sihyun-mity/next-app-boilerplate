@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { ReactNode } from 'react';
 import '@/styles/global.scss';
 import 'normalize.css';
-import { MobileDetector, RecoilClient } from '@/components';
+import { MobileDetector } from '@/components';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -13,9 +13,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko">
       <body>
-        <RecoilClient>
-          <MobileDetector>{children}</MobileDetector>
-        </RecoilClient>
+        <MobileDetector>{children}</MobileDetector>
       </body>
     </html>
   );

@@ -1,4 +1,3 @@
-export { default as RecoilClient } from './recoil-client';
 export { default as MobileDetector } from './mobile-detector';
 export { default as SmallView } from './small-view';
 export { default as MediumView } from './medium-view';

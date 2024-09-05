@@ -1,10 +1,11 @@
 import { type CSSProperties, RefObject, useId, useMemo } from 'react';
 import type { Property } from 'csstype';
-import type { StaticImageData } from 'next/image';
+import type { ImageProps } from 'next/image';
 import Image from 'next/image';
 import styles from './index.module.scss';
+import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 
-interface Props {
+interface Props extends Omit<ImageProps, 'width' | 'height' | 'src' | 'alt' | 'objectFit'> {
   width?: Property.Width | number;
   height?: Property.Height | number;
   maxWidth?: Property.MaxWidth | number;
@@ -12,15 +13,14 @@ interface Props {
   minWidth?: Property.MinWidth | number;
   minHeight?: Property.MinHeight | number;
   responsiveRatio?: Property.PaddingBottom;
-  objectFit?: Property.ObjectFit;
-  src?: string | StaticImageData;
+  src?: string | StaticImport;
   alt?: string;
+  objectFit?: Property.ObjectFit;
   containerClass?: string;
   containerStyle?: CSSProperties;
+  imageBoxClass?: string;
+  imageClass?: string;
   imageStyle?: CSSProperties;
-  fill?: boolean;
-  priority?: boolean;
-  unoptimized?: boolean;
   onClick?: () => void;
   containerRef?: RefObject<HTMLDivElement> | null;
 }
@@ -38,12 +38,16 @@ const Index = ({
   alt = '',
   containerClass,
   containerStyle,
+  imageBoxClass,
+  imageClass,
   imageStyle,
   fill = !!responsiveRatio,
   priority = false,
   unoptimized,
   onClick,
   containerRef,
+  draggable = false,
+  ...props
 }: Props) => {
   const componentId = useId();
   const imageId = `next-image-${componentId}`;
@@ -67,13 +71,16 @@ const Index = ({
       priority={priority}
       sizes="100%"
       id={imageId}
+      className={imageClass}
       unoptimized={unoptimized !== undefined ? unoptimized : isRemoteImage}
       placeholder="blur"
       blurDataURL={
         isRemoteImage
-          ? undefined
-          : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP89h8AAvEB93wyFi8AAAAASUVORK5CYII='
+          ? 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP89h8AAvEB93wyFi8AAAAASUVORK5CYII='
+          : undefined
       }
+      draggable={draggable}
+      {...props}
     />
   ) : null;
 
