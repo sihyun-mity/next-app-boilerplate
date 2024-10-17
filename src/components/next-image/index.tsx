@@ -1,6 +1,6 @@
 import { type CSSProperties, RefObject, useId, useMemo } from 'react';
 import type { Property } from 'csstype';
-import type { ImageProps } from 'next/image';
+import type { ImageProps, StaticImageData } from 'next/image';
 import Image from 'next/image';
 import styles from './index.module.scss';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
@@ -47,11 +47,13 @@ const Index = ({
   onClick,
   containerRef,
   draggable = false,
+  placeholder = 'blur',
   ...props
 }: Props) => {
   const componentId = useId();
   const imageId = `next-image-${componentId}`;
   const isRemoteImage = useMemo(() => typeof src === 'string' && src.startsWith('http'), [src]);
+  const isLocalSvgImage = useMemo(() => typeof src !== 'string' && (src as StaticImageData).src.endsWith('svg'), [src]);
   const style: CSSProperties = useMemo(() => {
     const obj: CSSProperties = { objectFit, ...imageStyle };
     if (!fill) {
@@ -73,9 +75,9 @@ const Index = ({
       id={imageId}
       className={imageClass}
       unoptimized={unoptimized !== undefined ? unoptimized : isRemoteImage}
-      placeholder="blur"
+      placeholder={isLocalSvgImage ? 'empty' : placeholder}
       blurDataURL={
-        isRemoteImage
+        isRemoteImage || typeof src === 'string'
           ? 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP89h8AAvEB93wyFi8AAAAASUVORK5CYII='
           : undefined
       }
