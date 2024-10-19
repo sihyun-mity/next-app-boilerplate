@@ -53,7 +53,10 @@ const Index = ({
   const componentId = useId();
   const imageId = `next-image-${componentId}`;
   const isRemoteImage = useMemo(() => typeof src === 'string' && src.startsWith('http'), [src]);
-  const isLocalSvgImage = useMemo(() => typeof src !== 'string' && (src as StaticImageData).src.endsWith('svg'), [src]);
+  const isLocalSvgImage = useMemo(
+    () => typeof src !== 'string' && !!(src as StaticImageData)?.src?.endsWith?.('svg'),
+    [src],
+  );
   const style: CSSProperties = useMemo(() => {
     const obj: CSSProperties = { objectFit, ...imageStyle };
     if (!fill) {
