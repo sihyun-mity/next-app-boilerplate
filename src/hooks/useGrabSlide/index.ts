@@ -40,10 +40,8 @@ export default function useGrabSlide() {
     if (slider.current) {
       setIsDown(false);
 
-      const endX = e.clientX;
-      // @ts-ignore
-      // 이전 버전 호환성 주의 필요
-      const childNodes: ChildNode[] = [...(slider.current?.childNodes || [])];
+      const endX = e.pageX - slider.current.offsetLeft;
+      const childNodes = [...(slider.current?.childNodes || [])];
       const dragDiff = Math.abs(startX.current - endX);
       if (dragDiff > 10) {
         childNodes.forEach((child) => child.addEventListener('click', preventEvent));
