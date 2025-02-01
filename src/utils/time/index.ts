@@ -1,6 +1,4 @@
-import { TimesEntity } from './elapsed-time.type';
-
-const elapsedTime = (start: Date, end: Date) => {
+export const getElapsedTime = (start: Date, end: Date) => {
   const diff = end.getTime() - start.getTime(),
     secondsMillisecond = Math.floor(diff / 1000),
     minutesMillisecond = Math.floor(secondsMillisecond / 60),
@@ -10,7 +8,7 @@ const elapsedTime = (start: Date, end: Date) => {
     minutes = minutesMillisecond % 60,
     hours = minutes % 24;
 
-  const times: TimesEntity[] = [
+  const times: ElapsedTime[] = [
     { time: days, unit: '일' },
     { time: hours, unit: '시간' },
     { time: minutes, unit: '분' },
@@ -23,4 +21,5 @@ const elapsedTime = (start: Date, end: Date) => {
     .join(' ');
 };
 
-export default elapsedTime;
+export const sleep = async (delay: number): Promise<NodeJS.Timeout> =>
+  new Promise((resolve) => setTimeout(resolve, delay));

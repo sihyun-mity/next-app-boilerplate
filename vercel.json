@@ -1,10 +1,10 @@
 {
   "functions": {
     "app/**/*": {
-      "memory": 128
+      "memory": 256
     },
     "pages/**/*": {
-      "memory": 128
+      "memory": 256
     }
   }
 }
