@@ -4,3 +4,7 @@ export * from './scroll';
 export * from './meta';
 export * from './element';
 export * from './query';
+export * from './device';
+export * from './object';
+export * from './promise';
+export * from './ref';
