@@ -30,3 +30,5 @@ export const filterDuplicateItem = <T extends { [key: string]: unknown }>({
   const uniqueKeys = new Map();
   return items.filter((v) => !uniqueKeys.has(v[key]) && uniqueKeys.set(v[key], true));
 };
+
+export const deepCopy = <T extends unknown[]>(data: T): T => JSON.parse(JSON.stringify(data ?? '[]'));
