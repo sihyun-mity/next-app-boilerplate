@@ -16,6 +16,10 @@ export const compareAllKeys = <T extends Record<string, any>>(obj1: T, obj2: T):
 };
 
 export const hasAllValues = <T extends Record<string, any>>(obj: T): boolean => {
+  if (!Object.values(obj).length) {
+    return false;
+  }
+
   return Object.values(obj).every((value) => {
     if (value === null || value === undefined) {
       return false;
