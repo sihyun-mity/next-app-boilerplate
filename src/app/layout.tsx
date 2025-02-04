@@ -24,6 +24,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Suspense>
           <MobileDetector>{children}</MobileDetector>
         </Suspense>
+
+        {/* For Portal Component */}
+        <div id="next-app-portal" />
       </body>
     </html>
   );
