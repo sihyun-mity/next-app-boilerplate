@@ -22,7 +22,7 @@ interface Props extends Omit<ImageProps, 'width' | 'height' | 'src' | 'alt' | 'o
   imageClass?: string;
   imageStyle?: CSSProperties;
   onClick?: () => void;
-  containerRef?: RefObject<HTMLDivElement> | null;
+  containerRef?: RefObject<HTMLDivElement | null> | null;
 }
 
 const Index = ({

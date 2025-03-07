@@ -3,8 +3,8 @@
 import { type RefObject, useCallback } from 'react';
 
 interface Props {
-  focusedRef: RefObject<HTMLElement>;
-  parentRef: RefObject<HTMLElement>;
+  focusedRef: RefObject<HTMLElement | null>;
+  parentRef: RefObject<HTMLElement | null>;
   scrollOffset?: number;
   initialScroll?: boolean;
 }
@@ -31,7 +31,7 @@ export default function useFocusScroll({ focusedRef, parentRef, scrollOffset = 0
         });
       }
     },
-    [focusedRef, parentRef, scrollOffset]
+    [focusedRef, parentRef, scrollOffset],
   );
 
   if (typeof window !== 'undefined' && initialScroll) {
