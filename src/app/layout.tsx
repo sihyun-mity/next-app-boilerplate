@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { ReactNode, Suspense } from 'react';
-import '@/styles/global.scss';
+import '@/styles/global.css';
 import 'normalize.css';
 import { MobileDetector } from '@/components';
 import { staticMetadata } from '@/utils';
