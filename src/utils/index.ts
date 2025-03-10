@@ -8,3 +8,4 @@ export * from './device';
 export * from './object';
 export * from './promise';
 export * from './ref';
+export * from './next';
