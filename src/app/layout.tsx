@@ -4,6 +4,8 @@ import '@/styles/global.css';
 import 'normalize.css';
 import { MobileDetector } from '@/components';
 import { staticMetadata } from '@/utils';
+import localFont from 'next/font/local';
+import classNames from 'classnames';
 
 export const metadata: Metadata = staticMetadata({
   title: 'Create Next App',
@@ -17,10 +19,17 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
 };
 
+const pretendard = localFont({
+  src: '../../public/fonts/PretendardVariable.woff2',
+  display: 'swap',
+  weight: '45 920',
+  variable: '--font-pretendard',
+});
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko">
-      <body>
+      <body className={classNames(pretendard.variable, 'font-pretendard')}>
         <Suspense>
           <MobileDetector>{children}</MobileDetector>
         </Suspense>
