@@ -4,7 +4,7 @@ Typescript 기반 [Create Next App](https://github.com/vercel/next.js) 템플릿
 <br>
 Custom Hook, UA / Media Query Component, Utility 함수,
 <br>
-Zustand, NormalizeCSS, Prettier, Git Pre-Hook 등 외부 라이브러리를 포함하고 있습니다.
+Zustand, Prettier, Git Pre-Hook 등 외부 라이브러리를 포함하고 있습니다.
 <br>
 Visual Studio Code와 IntelliJ Idea용 사전 실행 구성이 있습니다.
 
