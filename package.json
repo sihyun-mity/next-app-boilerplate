@@ -16,7 +16,7 @@
   "dependencies": {
     "classnames": "^2.5.1",
     "mobile-detect": "^1.4.5",
-    "next": "^15.2.1",
+    "next": "^15.2.3",
     "query-string": "^9.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -30,7 +30,7 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "eslint": "^8",
-    "eslint-config-next": "^15.2.1",
+    "eslint-config-next": "^15.2.3",
     "husky": "^8.0.0",
     "lint-staged": "^15.4.3",
     "postcss": "^8.5.3",
