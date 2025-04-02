@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './fonts.css';
+@import './layout.css';
 
 body {
   background-color: #fff;
