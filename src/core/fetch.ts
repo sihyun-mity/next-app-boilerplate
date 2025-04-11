@@ -1,6 +1,6 @@
-import returnFetch, { ReturnFetch } from 'return-fetch';
+import returnFetch from 'return-fetch';
 
-export const fetchExtended: ReturnFetch = returnFetch({
+export const fetchExtended = returnFetch({
   baseUrl: '',
   headers: { Accept: 'application/json' },
   interceptors: {
