@@ -1,4 +1,4 @@
-import { type CSSProperties, RefObject, useId, useMemo } from 'react';
+import { type CSSProperties, RefObject } from 'react';
 import type { Property } from 'csstype';
 import type { ImageProps, StaticImageData } from 'next/image';
 import Image from 'next/image';
@@ -50,21 +50,16 @@ const Index = ({
   placeholder = 'blur',
   ...props
 }: Props) => {
-  const componentId = useId();
-  const imageId = `next-image-${componentId}`;
-  const isRemoteImage = useMemo(() => typeof src === 'string' && src.startsWith('http'), [src]);
-  const isLocalSvgImage = useMemo(
-    () => typeof src !== 'string' && !!(src as StaticImageData)?.src?.endsWith?.('svg'),
-    [src],
-  );
-  const style: CSSProperties = useMemo(() => {
+  const isRemoteImage = typeof src === 'string' && src.startsWith('http');
+  const isLocalSvgImage = typeof src !== 'string' && !!(src as StaticImageData)?.src?.endsWith?.('svg');
+  const style: CSSProperties = (() => {
     const obj: CSSProperties = { objectFit, ...imageStyle };
     if (!fill) {
       obj.width = width;
       obj.height = height;
     }
     return obj;
-  }, [fill, height, imageStyle, objectFit, width]);
+  })();
   const element = src ? (
     <Image
       src={src}
@@ -75,7 +70,6 @@ const Index = ({
       fill={fill}
       priority={priority}
       sizes="100%"
-      id={imageId}
       className={imageClass}
       unoptimized={unoptimized !== undefined ? unoptimized : isRemoteImage}
       placeholder={isLocalSvgImage ? 'empty' : placeholder}
