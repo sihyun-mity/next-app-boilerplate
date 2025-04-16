@@ -48,6 +48,7 @@ const Index = ({
   containerRef,
   draggable = false,
   placeholder = 'blur',
+  quality = 100,
   ...props
 }: Props) => {
   const isRemoteImage = typeof src === 'string' && src.startsWith('http');
@@ -79,6 +80,7 @@ const Index = ({
           : undefined
       }
       draggable={draggable}
+      quality={quality}
       {...props}
     />
   ) : null;
