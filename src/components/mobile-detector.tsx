@@ -1,10 +1,10 @@
 'use client';
 
-import { ReactNode, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import MobileDetect from 'mobile-detect';
 import { useMobileStore } from '@/stores';
 
-const MobileDetector = ({ children }: { children: ReactNode }) => {
+export default function MobileDetector() {
   const { setIsMobile, setIsAndroid, setIsIOS, setIsReady } = useMobileStore();
 
   useLayoutEffect(() => {
@@ -15,7 +15,5 @@ const MobileDetector = ({ children }: { children: ReactNode }) => {
     setIsReady(true);
   }, [setIsMobile, setIsAndroid, setIsIOS, setIsReady]);
 
-  return children;
-};
-
-export default MobileDetector;
+  return null;
+}

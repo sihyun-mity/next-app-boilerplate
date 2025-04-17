@@ -29,9 +29,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko">
       <body className={classNames(pretendard.variable, 'font-pretendard')}>
-        <Suspense>
-          <MobileDetector>{children}</MobileDetector>
-        </Suspense>
+        <Suspense>{children}</Suspense>
+        <MobileDetector />
 
         {/* For Portal Component */}
         <div id="next-app-portal" />
