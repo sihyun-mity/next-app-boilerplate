@@ -1,9 +1,10 @@
-import { type CSSProperties, RefObject } from 'react';
+import { ComponentProps, type CSSProperties, RefObject } from 'react';
 import type { Property } from 'csstype';
 import type { ImageProps, StaticImageData } from 'next/image';
 import Image from 'next/image';
 import styles from './index.module.scss';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
+import classNames from 'classnames';
 
 interface Props extends Omit<ImageProps, 'width' | 'height' | 'src' | 'alt' | 'objectFit'> {
   width?: Property.Width | number;
@@ -103,4 +104,17 @@ const Index = ({
   );
 };
 
-export default Index;
+/**
+ * A React component that wraps the `NextImage` component,
+ * applying copy anti-logic
+ */
+function Protected({ imageClass, ...props }: ComponentProps<typeof Index>) {
+  return (
+    <Index
+      {...props}
+      imageClass={classNames(imageClass, 'select-none pointer-events-none [-webkit-touch-callout: none]')}
+    />
+  );
+}
+
+export default Object.assign(Index, { Protected });
