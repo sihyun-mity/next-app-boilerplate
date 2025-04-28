@@ -1,12 +1,10 @@
-import { ComponentProps, type CSSProperties, RefObject } from 'react';
+import Image, { type ImageProps, StaticImageData } from 'next/image';
+import { CSSProperties, ReactNode, RefObject } from 'react';
+import styles from './next-image.module.scss';
 import type { Property } from 'csstype';
-import type { ImageProps, StaticImageData } from 'next/image';
-import Image from 'next/image';
-import styles from './index.module.scss';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
-import classNames from 'classnames';
 
-interface Props extends Omit<ImageProps, 'width' | 'height' | 'src' | 'alt' | 'objectFit'> {
+type Props = Omit<ImageProps, 'width' | 'height' | 'src' | 'alt' | 'objectFit'> & {
   width?: Property.Width | number;
   height?: Property.Height | number;
   maxWidth?: Property.MaxWidth | number;
@@ -24,9 +22,9 @@ interface Props extends Omit<ImageProps, 'width' | 'height' | 'src' | 'alt' | 'o
   imageStyle?: CSSProperties;
   onClick?: () => void;
   containerRef?: RefObject<HTMLDivElement | null> | null;
-}
+};
 
-const Index = ({
+export default function NextImage({
   width = '100%',
   height = 'auto',
   maxWidth,
@@ -49,7 +47,7 @@ const Index = ({
   placeholder = 'blur',
   quality = 100,
   ...props
-}: Props) => {
+}: Props): ReactNode {
   const isRemoteImage = typeof src === 'string' && src.startsWith('http');
   const isLocalSvgImage = typeof src !== 'string' && !!(src as StaticImageData)?.src?.endsWith?.('svg');
   const style: CSSProperties = (() => {
@@ -98,20 +96,4 @@ const Index = ({
       </div>
     </div>
   );
-};
-
-/**
- * A React component that wraps the `NextImage` component,
- * applying copy anti-logic
- */
-function Protected({ imageClass, ...props }: ComponentProps<typeof Index>) {
-  return (
-    <Index
-      {...props}
-      imageClass={classNames(imageClass, '[-webkit-touch-callout: none] pointer-events-none select-none')}
-      draggable={false}
-    />
-  );
 }
-
-export default Object.assign(Index, { Protected });

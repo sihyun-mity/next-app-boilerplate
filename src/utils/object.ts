@@ -1,3 +1,5 @@
+import { ComponentProps } from 'react';
+
 export const compareAllKeys = <T extends Record<string, any>>(obj1: T, obj2: T): boolean => {
   const keys1 = Object.keys(obj1);
   const keys2 = Object.keys(obj2);
@@ -39,4 +41,22 @@ export const hasAllValues = <T extends Record<string, any>>(obj: T): boolean => 
 
     return true;
   });
+};
+
+export const withSubComponents = <T extends ComponentProps<any>, Sub extends Record<string, unknown>>(
+  component: T,
+  subComponents: Sub,
+) => {
+  const result = component as T & { readonly [K in keyof Sub]: Sub[K] };
+
+  for (const key in subComponents) {
+    Object.defineProperty(result, key, {
+      value: subComponents[key],
+      writable: false,
+      configurable: false,
+      enumerable: true,
+    });
+  }
+
+  return result;
 };
