@@ -43,11 +43,9 @@ const Index = ({
   imageClass,
   imageStyle,
   fill = !!responsiveRatio,
-  priority = false,
   unoptimized,
   onClick,
   containerRef,
-  draggable = false,
   placeholder = 'blur',
   quality = 100,
   ...props
@@ -70,7 +68,6 @@ const Index = ({
       height={fill ? undefined : 0}
       style={style}
       fill={fill}
-      priority={priority}
       sizes="100%"
       className={imageClass}
       unoptimized={unoptimized !== undefined ? unoptimized : isRemoteImage}
@@ -80,7 +77,6 @@ const Index = ({
           ? 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP89h8AAvEB93wyFi8AAAAASUVORK5CYII='
           : undefined
       }
-      draggable={draggable}
       quality={quality}
       {...props}
     />
@@ -112,7 +108,8 @@ function Protected({ imageClass, ...props }: ComponentProps<typeof Index>) {
   return (
     <Index
       {...props}
-      imageClass={classNames(imageClass, 'select-none pointer-events-none [-webkit-touch-callout: none]')}
+      imageClass={classNames(imageClass, '[-webkit-touch-callout: none] pointer-events-none select-none')}
+      draggable={false}
     />
   );
 }
