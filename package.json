@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "classnames": "^2.5.1",
+    "gsap": "^3.12.7",
     "mobile-detect": "^1.4.5",
     "next": "^15.2.3",
     "query-string": "^9.1.1",

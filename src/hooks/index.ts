@@ -6,3 +6,4 @@ export { default as useFocusScroll } from './useFocusScroll';
 export { default as useOnClickOutside } from './useOnClickOutside';
 export { default as useScrollPage } from './useScrollPage';
 export { default as useSearchQuery } from './useSearchQuery';
+export { default as useScrollFadeIn } from './useScrollFadeIn';

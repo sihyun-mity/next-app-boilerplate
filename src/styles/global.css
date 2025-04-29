@@ -2,6 +2,7 @@
 @import './fonts.css';
 @import './layout.css';
 @import './utility.css';
+@import './gsap.css';
 
 body {
   background-color: #fff;
