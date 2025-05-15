@@ -1,7 +1,16 @@
 import { Metadata } from 'next';
 
 export function staticMetadata(meta: Metadata) {
-  return { ...meta, title: `${meta.title}` };
+  return {
+    ...meta,
+    title: `${meta.title}`,
+    description: `${meta.description}`,
+    openGraph: {
+      ...meta.openGraph,
+      images: meta.openGraph?.images,
+    },
+    keywords: [...(typeof meta.keywords === 'string' ? [meta.keywords] : meta.keywords || [])],
+  };
 }
 
 export const shareCurrentPage = async () => {
