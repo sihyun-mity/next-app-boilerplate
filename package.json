@@ -14,6 +14,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@tailwindcss/cli": "^4.1.7",
     "classnames": "^2.5.1",
     "gsap": "^3.12.7",
     "mobile-detect": "^1.4.5",
@@ -39,7 +40,7 @@
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "sass": "^1.85.1",
-    "tailwindcss": "^4.0.11",
+    "tailwindcss": "^4.1.7",
     "tsc-files": "^1.1.4",
     "typescript": "^5"
   }
