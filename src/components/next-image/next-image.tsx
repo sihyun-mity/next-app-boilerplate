@@ -1,6 +1,5 @@
 import Image, { type ImageProps, StaticImageData } from 'next/image';
 import { CSSProperties, ReactNode, RefObject } from 'react';
-import styles from './next-image.module.scss';
 import type { Property } from 'csstype';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 
@@ -17,7 +16,6 @@ type Props = Omit<ImageProps, 'width' | 'height' | 'src' | 'alt' | 'objectFit'> 
   objectFit?: Property.ObjectFit;
   containerClass?: string;
   containerStyle?: CSSProperties;
-  imageBoxClass?: string;
   imageClass?: string;
   imageStyle?: CSSProperties;
   onClick?: () => void;
@@ -37,7 +35,6 @@ export default function NextImage({
   alt = '',
   containerClass,
   containerStyle,
-  imageBoxClass,
   imageClass,
   imageStyle,
   fill = !!responsiveRatio,
@@ -91,8 +88,8 @@ export default function NextImage({
       onClick={onClick}
       ref={containerRef}
     >
-      <div className={styles.imageBox} style={{ paddingBottom: responsiveRatio }}>
-        {responsiveRatio ? <picture className={styles.responsiveBox}>{element}</picture> : element}
+      <div className="relative h-full w-full" style={{ paddingBottom: responsiveRatio }}>
+        {responsiveRatio ? <picture className="absolute top-0 left-0 h-full w-full">{element}</picture> : element}
       </div>
     </div>
   );

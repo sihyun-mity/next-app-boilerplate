@@ -1,6 +1,6 @@
 import OriginNextImage from './next-image';
-import classNames from 'classnames';
 import { ComponentProps, ReactNode } from 'react';
+import { cn } from '@/utils';
 
 /**
  * A React component that wraps the `NextImage` component,
@@ -10,7 +10,7 @@ export default function Protected({ imageClass, ...props }: ComponentProps<typeo
   return (
     <OriginNextImage
       {...props}
-      imageClass={classNames(imageClass, '[-webkit-touch-callout: none] pointer-events-none select-none')}
+      imageClass={cn(imageClass, '[-webkit-touch-callout: none] pointer-events-none select-none')}
       draggable={false}
     />
   );

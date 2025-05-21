@@ -2,9 +2,8 @@ import type { Metadata, Viewport } from 'next';
 import { ReactNode, Suspense } from 'react';
 import '@/styles/global.css';
 import { MobileDetector } from '@/components';
-import { staticMetadata } from '@/utils';
+import { cn, staticMetadata } from '@/utils';
 import localFont from 'next/font/local';
-import classNames from 'classnames';
 
 export const metadata: Metadata = staticMetadata({
   title: 'Create Next App',
@@ -28,7 +27,7 @@ const pretendard = localFont({
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko">
-      <body className={classNames(pretendard.variable, 'font-pretendard')}>
+      <body className={cn(pretendard.variable, 'font-pretendard')}>
         <Suspense>{children}</Suspense>
         <MobileDetector />
 

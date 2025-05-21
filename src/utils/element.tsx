@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import { cn } from '@/utils/class';
 
 export const getHighlightedText = (text: string, query: string, options?: { className?: string }) => {
   const re = new RegExp(`(${query})`, 'gi');
@@ -8,7 +8,7 @@ export const getHighlightedText = (text: string, query: string, options?: { clas
       <>
         {parts.map((part) =>
           part.toLowerCase() === query.toLowerCase() ? (
-            <span key={Math.random().toString(36).slice(2)} className={classNames(options?.className)}>
+            <span key={Math.random().toString(36).slice(2)} className={cn(options?.className)}>
               {part}
             </span>
           ) : (
