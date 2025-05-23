@@ -10,7 +10,9 @@ const useSearchQuery = <T extends ParsedUrlQuery>(): [T, (query: Partial<T>) => 
   const queries = useAllSearchParams();
 
   const setQuery = (query: Partial<T>) =>
-    router.replace(`${pathname}?${queryString.stringify({ ...queries, ...query })}`, { scroll: false });
+    router.replace(`${pathname}?${queryString.stringify({ ...queries, ...query }, { arrayFormat: 'bracket' })}`, {
+      scroll: false,
+    });
 
   return [queries as T, setQuery];
 };
