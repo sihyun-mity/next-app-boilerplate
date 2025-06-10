@@ -8,7 +8,7 @@ const siteConfig = {
 };
 
 // Recursively collect all pages with `page.tsx` or `page.jsx`
-function getStaticRoutes(dir = 'app', parentPath = ''): string[] {
+function getStaticRoutes(dir = 'src/app', parentPath = ''): string[] {
   const currentDir = path.join(process.cwd(), dir);
   const entries = fs.readdirSync(currentDir, { withFileTypes: true });
 
