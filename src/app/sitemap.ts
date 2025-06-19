@@ -70,7 +70,7 @@ async function getDynamicRoutes({
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const allRoutes = (
+  const generateRoutes = (
     await Promise.all(
       getStaticRoutes().map((route) => {
         const matches = route.match(/^\/(.*?)(?:\/\[(.+)](.*?))?$/);
@@ -86,20 +86,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         return getDynamicRoutes({ prefix, dynamicSegment, suffix });
       }),
     )
-  ).flat();
+  )
+    .flat()
+    // Filter exclude routes
+    .filter((route) => !['/error', '/route-to-exclude'].includes(route))
+    // Remove route groups
+    .map((route) => route.replace(/\/\([^/]+?\)(?=\/|$)/g, ''))
+    // Filter root dot route
+    .filter((route) => route && route !== '/.');
 
-  return (
-    allRoutes
-      // Filtered user custom excludes route
-      .filter((route) => !['/error', '/route-to-exclude'].includes(route))
-      // Remove route groups
-      .map((route) => route.replace(/\/\([^/]+?\)(?=\/|$)/g, ''))
-      // Remove empty routes
-      .filter((route) => route && route !== '/.')
-      .map((route) => ({
-        url: encodeURI(`${siteConfig.url}${route}`),
-        lastModified: new Date().toISOString(),
-        priority: ['/', '/route-to-important'].includes(route) ? 1 : 0.8,
-      }))
-  );
+  return [...generateRoutes].map((route) => ({
+    url: encodeURI(`${siteConfig.url}${route}`),
+    lastModified: new Date().toISOString(),
+    priority: ['/', '/route-to-important'].includes(route) ? 1 : 0.8,
+  }));
 }
