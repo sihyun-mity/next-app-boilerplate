@@ -23,16 +23,12 @@ function getStaticRoutes(dir = 'src/app', parentPath = ''): string[] {
     const fullPath = path.join(currentDir, entry.name);
 
     if (entry.isDirectory()) {
-      const routePath = path.join(parentPath, entry.name.startsWith('(') ? '' : entry.name);
+      const routePath = path.join(parentPath, entry.name);
 
       // Check if this directory has a page.tsx or page.jsx file
       const hasPage = ['page.tsx', 'page.jsx'].some((file) => fs.existsSync(path.join(fullPath, file)));
 
-      if (hasPage) {
-        if (routePath) {
-          routes.push(`/${routePath}`);
-        }
-      }
+      if (hasPage) routes.push(`/${routePath}`);
 
       // Continue scanning nested folders recursively
       const nestedRoutes = getStaticRoutes(path.join(dir, entry.name), routePath);
