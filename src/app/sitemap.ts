@@ -69,6 +69,15 @@ async function getDynamicRoutes({
   }
 }
 
+function escapeXmlEntities(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const generateRoutes = (
     await Promise.all(
@@ -95,9 +104,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Filter root dot route
     .filter((route) => route && route !== '/.');
 
-  return [...generateRoutes].map((route) => ({
-    url: encodeURI(`${siteConfig.url}${route}`),
-    lastModified: new Date().toISOString(),
-    priority: ['/', '/route-to-important'].includes(route) ? 1 : 0.8,
-  }));
+  return [...generateRoutes].map((route) => {
+    const encodedUrl = encodeURI(`${siteConfig.url}${route}`);
+    const xmlUrl = escapeXmlEntities(encodedUrl);
+
+    return {
+      url: xmlUrl,
+      lastModified: new Date().toISOString(),
+      priority: ['/', '/route-to-important'].includes(route) ? 1 : 0.8,
+    };
+  });
 }
