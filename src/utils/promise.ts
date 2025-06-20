@@ -3,3 +3,6 @@ export const getFulfilledResults = <T>(result: PromiseSettledResult<T>[]) =>
 
 export const getRejectedResults = <T>(result: PromiseSettledResult<T>[]) =>
   result.filter(({ status }) => status === 'rejected').map((v) => v as PromiseRejectedResult);
+
+export const sleep = async (delay: number): Promise<NodeJS.Timeout> =>
+  new Promise((resolve) => setTimeout(resolve, delay));
