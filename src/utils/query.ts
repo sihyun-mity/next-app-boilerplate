@@ -1,3 +1,5 @@
+import queryString from 'query-string';
+
 export const isValidQuery = (value: any): boolean =>
   value !== undefined && value !== null && value !== 'undefined' && value !== 'null' && value.length > 0;
 
@@ -29,4 +31,19 @@ export const removeFromQuery = (query: string | string[] | undefined, value: str
     return query === value ? undefined : query;
   }
   return undefined;
+};
+
+export const createHrefQuery = ({ pathname, query = {} }: { pathname: string; query?: ParsedUrlQuery }): string => {
+  if (!Object.keys(query).length) return pathname;
+
+  const stringifyQuery = queryString.stringify({ ...query }, { arrayFormat: 'bracket' });
+  if (pathname.includes('?')) {
+    if (pathname.endsWith('&')) {
+      return `${pathname}${stringifyQuery}`;
+    } else {
+      return `${pathname}&${stringifyQuery}`;
+    }
+  } else {
+    return `${pathname}?${stringifyQuery}`;
+  }
 };
