@@ -4,7 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import queryString from 'query-string';
 import { useAllSearchParams } from './index';
 
-const useSearchQuery = <T extends ParsedUrlQuery>(): [T, (query: Partial<T>) => void] => {
+const useSearchQuery = <T extends ParsedUrlQuery>(): [T, (query: Partial<T>) => void, () => void] => {
   const router = useRouter();
   const pathname = usePathname();
   const queries = useAllSearchParams();
@@ -14,7 +14,9 @@ const useSearchQuery = <T extends ParsedUrlQuery>(): [T, (query: Partial<T>) => 
       scroll: false,
     });
 
-  return [queries as T, setQuery];
+  const resetQuery = () => router.replace(pathname, { scroll: false });
+
+  return [queries as T, setQuery, resetQuery];
 };
 
 export default useSearchQuery;
