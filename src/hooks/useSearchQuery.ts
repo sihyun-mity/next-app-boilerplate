@@ -3,18 +3,22 @@
 import { usePathname, useRouter } from 'next/navigation';
 import queryString from 'query-string';
 import { useAllSearchParams } from './index';
+import { useCallback } from 'react';
 
 const useSearchQuery = <T extends ParsedUrlQuery>(): [T, (query: Partial<T>) => void, () => void] => {
   const router = useRouter();
   const pathname = usePathname();
   const queries = useAllSearchParams();
 
-  const setQuery = (query: Partial<T>) =>
-    router.replace(`${pathname}?${queryString.stringify({ ...queries, ...query }, { arrayFormat: 'bracket' })}`, {
-      scroll: false,
-    });
+  const setQuery = useCallback(
+    (query: Partial<T>) =>
+      router.replace(`${pathname}?${queryString.stringify({ ...queries, ...query }, { arrayFormat: 'bracket' })}`, {
+        scroll: false,
+      }),
+    [pathname, queries, router],
+  );
 
-  const resetQuery = () => router.replace(pathname, { scroll: false });
+  const resetQuery = useCallback(() => router.replace(pathname, { scroll: false }), [pathname, router]);
 
   return [queries as T, setQuery, resetQuery];
 };
