@@ -8,7 +8,7 @@ import { isValidQuery } from '@/utils';
 export default function useAllSearchParams() {
   const searchParams = useSearchParams();
   return useMemo(() => {
-    const obj: { [K: string]: string | string[] | undefined } = {};
+    const obj: ParsedUrlQuery = {};
     searchParams?.forEach((value, key) => {
       if (value) {
         if (isValidQuery(obj[key])) {
