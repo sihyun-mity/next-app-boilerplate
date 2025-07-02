@@ -36,7 +36,7 @@ export const removeFromQuery = (query: string | string[] | undefined, value: str
 export const createHrefQuery = ({ pathname, query = {} }: { pathname: string; query?: ParsedUrlQuery }): string => {
   if (!Object.keys(query).length) return pathname;
 
-  const stringifyQuery = queryString.stringify({ ...query }, { arrayFormat: 'bracket' });
+  const stringifyQuery = queryString.stringify({ ...query });
   if (pathname.includes('?')) {
     if (pathname.endsWith('&')) {
       return `${pathname}${stringifyQuery}`;
