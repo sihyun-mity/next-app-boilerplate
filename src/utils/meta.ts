@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-export function staticMetadata(meta: Metadata) {
+export function staticMetadata(meta: Metadata): Metadata {
   return {
     ...meta,
     title: `${meta.title}`,
