@@ -51,7 +51,9 @@ async function getDynamicRoutes({
   suffix?: string;
 }): Promise<string[]> {
   try {
-    const { generateStaticParams } = await import(`./${prefix}/[${dynamicSegment}]${suffix}/page`);
+    const { generateStaticParams } = { ...(await import(`./${prefix}/[${dynamicSegment}]${suffix}/page`)) };
+    if (!generateStaticParams) return [];
+
     const params = await generateStaticParams();
 
     // Remove catch all route syntax
