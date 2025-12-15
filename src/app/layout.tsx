@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { ReactNode, Suspense } from 'react';
-import '@/styles/global.css';
+import '@/styles/globals.css';
 import { MobileDetector } from '@/components';
 import { cn, staticMetadata } from '@/utils';
 import localFont from 'next/font/local';
@@ -24,10 +24,15 @@ const pretendard = localFont({
   variable: '--font-pretendard',
 });
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="ko">
-      <body className={cn(pretendard.variable, 'font-pretendard')}>
+      <body
+        className={cn(
+          pretendard.variable,
+          'font-pretendard text-foreground touch-pan-y bg-white break-keep antialiased select-none',
+        )}
+      >
         <Suspense>{children}</Suspense>
         <MobileDetector />
 
