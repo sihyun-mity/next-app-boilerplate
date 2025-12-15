@@ -51,7 +51,9 @@ export default function NextImage({
   ...props
 }: Props): ReactNode {
   const isRemoteImage = typeof src === 'string' && src.startsWith('http');
-  const isLocalSvgImage = typeof src !== 'string' && !!(src as StaticImageData)?.src?.endsWith?.('svg');
+  const isLocalSvgImage =
+    (typeof src !== 'string' && !!(src as StaticImageData)?.src?.endsWith?.('svg')) ||
+    (typeof src === 'string' && !src.startsWith('http') && src.endsWith('svg'));
   const style: CSSProperties = (() => {
     const obj: CSSProperties = { objectFit, ...imageStyle };
     if (!fill) {
