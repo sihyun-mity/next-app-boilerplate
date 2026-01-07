@@ -8,7 +8,7 @@ export const fetchExtended = returnFetch({
       return args;
     },
 
-    response: async (response, requestArgs) => {
+    response: async (response) => {
       if (response.status >= 400) {
         throw await response.text().then(Error);
       }

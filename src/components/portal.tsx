@@ -1,7 +1,6 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 type Props = {
@@ -9,18 +8,9 @@ type Props = {
 };
 
 const Portal = ({ children }: Props) => {
-  const [mounted, setMounted] = useState<boolean>(false);
+  const node = document?.querySelector('#next-app-portal');
 
-  useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
-  }, []);
-
-  const node = mounted ? document?.querySelector('#next-app-portal') : null;
-
-  if (mounted && node) {
-    return createPortal(children, node);
-  }
+  if (node) return createPortal(children, node);
 
   return null;
 };

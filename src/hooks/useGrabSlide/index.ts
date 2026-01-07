@@ -52,16 +52,17 @@ export default function useGrabSlide() {
   }, []);
 
   const onSlide = useCallback(
+    // eslint-disable-next-line react-hooks/preserve-manual-memoization
     (e: MouseEvent) => {
-      if (slider.current) {
-        preventEvent(e);
-        if (!isDown) {
-          return;
-        }
-        const x = e.pageX - slider.current.offsetLeft;
-        const walk = x - startX.current;
-        slider.current.scrollLeft = scrollLeft.current - walk;
+      if (!slider.current) return;
+
+      preventEvent(e);
+      if (!isDown) {
+        return;
       }
+      const x = e.pageX - slider.current.offsetLeft;
+      const walk = x - startX.current;
+      slider.current.scrollLeft = scrollLeft.current - walk;
     },
     [isDown],
   );

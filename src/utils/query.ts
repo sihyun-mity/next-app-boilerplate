@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import queryString from 'query-string';
 
 export const isValidQuery = (value: any): boolean =>

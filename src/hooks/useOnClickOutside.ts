@@ -13,6 +13,7 @@ export default function useOnClickOutside<T extends HTMLElement = HTMLElement>(
       const el = ref?.current;
       if (!el || el.contains(event.target as Node)) {
         return;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } else if (event.target && (event.target as any).id === elementId) {
         return;
       }

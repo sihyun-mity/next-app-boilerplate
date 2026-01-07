@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { ComponentProps } from 'react';
 
 export const compareAllKeys = <T extends Record<string, any>>(obj1: T, obj2: T): boolean => {

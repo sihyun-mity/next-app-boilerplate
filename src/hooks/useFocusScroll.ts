@@ -27,7 +27,7 @@ export default function useFocusScroll({ focusedRef, parentRef, scrollOffset = 0
 
         parentRef.current.scrollTo({
           left: targetOffset,
-          behavior: behavior ?? moveOffset > document.documentElement.clientWidth ? 'instant' : 'smooth',
+          behavior: (behavior ?? moveOffset > document.documentElement.clientWidth) ? 'instant' : 'smooth',
         });
       }
     },
@@ -37,6 +37,7 @@ export default function useFocusScroll({ focusedRef, parentRef, scrollOffset = 0
   if (typeof window !== 'undefined' && initialScroll) {
     // Paint 완료 후 실행
     // useEffect로 실행 시 긴 스크롤 위치를 찾아가지 못하는 문제있음
+    // eslint-disable-next-line react-hooks/immutability
     window.onload = () => scroll();
   }
 
