@@ -30,7 +30,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <body
         className={cn(
           pretendard.variable,
-          'font-pretendard text-foreground touch-pan-y bg-white break-keep antialiased select-none',
+          'font-pretendard text-foreground bg-background touch-pan-y break-keep antialiased select-none',
         )}
       >
         <Suspense>{children}</Suspense>
