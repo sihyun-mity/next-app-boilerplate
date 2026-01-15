@@ -1,4 +1,4 @@
-import { cn } from '@/utils/class';
+import { cn } from '@/utils';
 
 export const getHighlightedText = (text: string, query: string, options?: { className?: string }) => {
   const re = new RegExp(`(${query})`, 'gi');
