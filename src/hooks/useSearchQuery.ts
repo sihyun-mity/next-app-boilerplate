@@ -11,10 +11,17 @@ const useSearchQuery = <T extends ParsedUrlQuery>(): [T, (query: Partial<T>) => 
   const queries = useAllSearchParams();
 
   const setQuery = useCallback(
-    (query: Partial<T>) =>
-      router.replace(`${pathname}?${queryString.stringify({ ...queries, ...query })}`, {
+    (query: Partial<T>) => {
+      const mergedQuery = { ...queries, ...query };
+
+      // falsy 한 값을 가진 key 삭제
+      const filteredQuery = Object.fromEntries(Object.entries(mergedQuery).filter(([, value]) => Boolean(value)));
+
+      // 쿼리 업데이트
+      router.replace(`${pathname}?${queryString.stringify(filteredQuery)}`, {
         scroll: false,
-      }),
+      });
+    },
     [pathname, queries, router],
   );
 
