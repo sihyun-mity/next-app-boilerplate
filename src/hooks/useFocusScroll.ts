@@ -1,6 +1,7 @@
 'use client';
 
-import { type RefObject, useCallback } from 'react';
+import { type RefObject, useCallback, useLayoutEffect } from 'react';
+import { IS_SERVER } from 'swr/_internal';
 
 interface Props {
   focusedRef: RefObject<HTMLElement | null>;
@@ -14,12 +15,12 @@ export default function useFocusScroll({ focusedRef, parentRef, scrollOffset = 0
     (behavior?: ScrollBehavior) => {
       if (parentRef.current && focusedRef.current) {
         const startPadding = parseInt(getComputedStyle(parentRef.current).paddingLeft);
-        const targetPosition = focusedRef.current.offsetLeft;
+        const parentRect = parentRef.current.getBoundingClientRect();
+        const targetRect = focusedRef.current.getBoundingClientRect();
+        const targetPosition = targetRect.left - parentRect.left + parentRef.current.scrollLeft;
 
         // 첫번째 노드 예외 처리
-        if (startPadding === targetPosition && parentRef.current.scrollLeft === 0) {
-          return;
-        }
+        if (startPadding === targetPosition && parentRef.current.scrollLeft === 0) return;
 
         const targetOffset = targetPosition - scrollOffset;
         const currentOffset = parentRef.current.scrollLeft;
@@ -34,12 +35,9 @@ export default function useFocusScroll({ focusedRef, parentRef, scrollOffset = 0
     [focusedRef, parentRef, scrollOffset],
   );
 
-  if (typeof window !== 'undefined' && initialScroll) {
-    // Paint 완료 후 실행
-    // useEffect로 실행 시 긴 스크롤 위치를 찾아가지 못하는 문제있음
-    // eslint-disable-next-line react-hooks/immutability
-    window.onload = () => scroll();
-  }
+  useLayoutEffect(() => {
+    if (!IS_SERVER && initialScroll) scroll();
+  }, [initialScroll, scroll]);
 
   return { scroll };
 }
