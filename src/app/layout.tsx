@@ -22,6 +22,7 @@ const pretendard = localFont({
   display: 'swap',
   weight: '45 920',
   variable: '--font-pretendard',
+  preload: false,
 });
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
@@ -30,7 +31,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <body
         className={cn(
           pretendard.variable,
-          'font-pretendard text-foreground bg-background touch-pan-y break-keep antialiased select-none',
+          'touch-pan-y bg-background font-pretendard break-keep text-foreground antialiased select-none'
         )}
       >
         <Suspense>{children}</Suspense>
