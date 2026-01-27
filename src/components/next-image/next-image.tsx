@@ -54,6 +54,10 @@ export default function NextImage({
   const isLocalSvgImage =
     (typeof src !== 'string' && !!(src as StaticImageData)?.src?.endsWith?.('svg')) ||
     (typeof src === 'string' && !src.startsWith('http') && src.endsWith('svg'));
+  const isAutomaticallyBlurImage =
+    !isRemoteImage &&
+    typeof src !== 'string' &&
+    ['jpg', 'jpeg', 'png', 'webp', 'avif'].includes((src as StaticImageData)?.src);
   const style: CSSProperties = (() => {
     const obj: CSSProperties = { objectFit, ...imageStyle };
     if (!fill) {
@@ -75,9 +79,9 @@ export default function NextImage({
       unoptimized={unoptimized !== undefined ? unoptimized : isRemoteImage}
       placeholder={isLocalSvgImage ? 'empty' : placeholder}
       blurDataURL={
-        isRemoteImage || typeof src === 'string'
-          ? 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP89h8AAvEB93wyFi8AAAAASUVORK5CYII='
-          : undefined
+        isAutomaticallyBlurImage
+          ? undefined
+          : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP89h8AAvEB93wyFi8AAAAASUVORK5CYII='
       }
       quality={quality}
       {...props}
