@@ -1,7 +1,6 @@
 import Image, { type ImageProps, StaticImageData } from 'next/image';
-import { CSSProperties, ReactNode, RefObject } from 'react';
+import { ComponentProps, CSSProperties, ReactNode, RefObject } from 'react';
 import type { Property } from 'csstype';
-import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import { cn } from '@/utils';
 
 type Props = Omit<ImageProps, 'width' | 'height' | 'src' | 'alt' | 'objectFit'> & {
@@ -12,7 +11,7 @@ type Props = Omit<ImageProps, 'width' | 'height' | 'src' | 'alt' | 'objectFit'> 
   minWidth?: Property.MinWidth | number;
   minHeight?: Property.MinHeight | number;
   responsiveRatio?: Property.PaddingBottom;
-  src?: string | StaticImport;
+  src?: ComponentProps<typeof Image>['src'];
   alt?: string;
   objectFit?: Property.ObjectFit;
   containerClass?: string;
