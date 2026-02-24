@@ -2,18 +2,31 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import queryString from 'query-string';
-import { useAllSearchParams } from './index';
 import { useCallback } from 'react';
+import { useAllSearchParams } from '@/hooks';
 
 type UseSearchQuerySetOptions = {
   replace?: boolean;
 };
 
-const useSearchQuery = <T extends ParsedUrlQuery>(): [
-  T,
-  (query: Partial<T>, options?: UseSearchQuerySetOptions) => void,
-  () => void,
-] => {
+type UseSearchQueryResultTuple<T> = [T, (query: Partial<T>, options?: UseSearchQuerySetOptions) => void, () => void];
+
+type UseSearchQueryResultObject<T> = {
+  query: T;
+  setQuery: (query: Partial<T>, options?: UseSearchQuerySetOptions) => void;
+  resetQuery: () => void;
+};
+
+type UseSearchQueryResult<T> = UseSearchQueryResultTuple<T> & UseSearchQueryResultObject<T>;
+
+/**
+ * URL 쿼리 관리 Hook
+ *
+ * @returns {UseSearchQueryResult} 현재 URL 쿼리와 쿼리 설정, 쿼리 초기화, Array 또는 Object로 가져올 수 있음
+ * @example const [query, setQuery, resetQuery] = useSearchQuery();
+ * @example const { query, setQuery, resetQuery } = useSearchQuery();
+ */
+export default function useSearchQuery<T extends ParsedUrlQuery>(): UseSearchQueryResult<T> {
   const router = useRouter();
   const pathname = usePathname();
   const queries = useAllSearchParams();
@@ -40,7 +53,10 @@ const useSearchQuery = <T extends ParsedUrlQuery>(): [
 
   const resetQuery = useCallback(() => router.replace(pathname, { scroll: false }), [pathname, router]);
 
-  return [queries as T, setQuery, resetQuery];
-};
+  const result = [queries as T, setQuery, resetQuery] as UseSearchQueryResult<T>;
+  result.query = queries as T;
+  result.setQuery = setQuery;
+  result.resetQuery = resetQuery;
 
-export default useSearchQuery;
+  return result;
+}
