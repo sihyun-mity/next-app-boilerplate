@@ -36,7 +36,10 @@ export function useServerNow(props?: Props) {
   }, [data, offset]);
 
   useEffect(() => {
-    if (!autoUpdate) return;
+    if (!autoUpdate) {
+      calculateNow();
+      return;
+    }
 
     const timer = setInterval(calculateNow, 1000);
     return () => clearInterval(timer);
