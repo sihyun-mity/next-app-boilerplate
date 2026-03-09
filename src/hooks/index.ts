@@ -1,9 +1,9 @@
-export { default as useMedia } from './useMedia';
-export { default as useGrabSlide } from './useGrabSlide';
-export { default as useAllSearchParams } from './useAllSearchParams';
-export { default as useContainer } from './useContainer';
-export { default as useFocusScroll } from './useFocusScroll';
-export { default as useOnClickOutside } from './useOnClickOutside';
-export { default as useScrollPage } from './useScrollPage';
-export { default as useSearchQuery } from './useSearchQuery';
-export { default as useScrollFadeIn } from './useScrollFadeIn';
+export * from './use-media';
+export * from './use-grab-slide';
+export * from './use-all-search-params';
+export * from './use-container';
+export * from './use-focus-scroll';
+export * from './use-on-click-outside';
+export * from './use-scroll-page';
+export * from './use-search-query';
+export * from './use-scroll-fade-in';

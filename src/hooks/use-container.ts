@@ -6,7 +6,7 @@ import type { Property } from 'csstype';
 
 import { useMedia } from './index';
 
-export default function useContainer() {
+export function useContainer() {
   const calculateOverflowPadding = useCallback(() => {
     const { clientWidth } = document.documentElement;
 
@@ -21,7 +21,7 @@ export default function useContainer() {
   const { lg } = useMedia();
   const padding: Property.Padding = useMemo(
     () => (lg ? `0 calc(32px + ${overflowPadding}px)` : `0 20px`),
-    [overflowPadding, lg],
+    [overflowPadding, lg]
   );
 
   const onResize = useCallback(() => setOverflowPadding(calculateOverflowPadding), [calculateOverflowPadding]);

@@ -26,7 +26,7 @@ type UseSearchQueryResult<T> = UseSearchQueryResultTuple<T> & UseSearchQueryResu
  * @example const [query, setQuery, resetQuery] = useSearchQuery();
  * @example const { query, setQuery, resetQuery } = useSearchQuery();
  */
-export default function useSearchQuery<T extends ParsedUrlQuery>(): UseSearchQueryResult<T> {
+export function useSearchQuery<T extends ParsedUrlQuery>(): UseSearchQueryResult<T> {
   const router = useRouter();
   const pathname = usePathname();
   const queries = useAllSearchParams();
