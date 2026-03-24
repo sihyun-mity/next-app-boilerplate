@@ -1,12 +1,15 @@
-import OriginNextImage from './next-image';
 import { ComponentProps, ReactNode } from 'react';
 import { cn } from '@/utils';
+import { OriginNextImage } from '@/components';
 
 /**
  * A React component that wraps the `NextImage` component,
  * applying copy anti-logic
  */
-export default function Protected({ className, ...props }: ComponentProps<typeof OriginNextImage>): ReactNode {
+export function ProtectedNextImage({
+  className,
+  ...props
+}: Readonly<ComponentProps<typeof OriginNextImage>>): ReactNode {
   return (
     <OriginNextImage
       {...props}

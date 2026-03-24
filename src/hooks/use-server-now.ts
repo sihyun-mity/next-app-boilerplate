@@ -14,7 +14,7 @@ type Props = {
  * @param {Props} props - Properties
  * @param {Props['autoUpdate']} [props.autoUpdate = true] - 서버 시간을 매초마다 갱신
  */
-export function useServerNow(props?: Props) {
+export function useServerNow(props?: Readonly<Props>) {
   const { autoUpdate = true } = { ...props };
   const [now, setNow] = useState<number>();
   const [offset, setOffset] = useState<number>(0);

@@ -1,10 +1,12 @@
-export interface MediaStore extends Media {
-  setMedia: (media: Partial<Media>) => void;
-}
+export type MediaStore = MediaStoreGetter & MediaStoreSetter;
 
-export interface Media {
+export type MediaStoreGetter = {
   sm: boolean;
   md: boolean;
   lg: boolean;
   xl: boolean;
-}
+};
+
+export type MediaStoreSetter = {
+  setMedia: (media: Partial<MediaStoreGetter>) => void;
+};

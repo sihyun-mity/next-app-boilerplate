@@ -1,7 +1,7 @@
-import OriginNextImage from './next-image';
-import Protected from './protected';
 import { withSubComponents } from '@/utils';
+import { OriginNextImage, ProtectedNextImage as Protected } from '.';
 
-const NextImage = withSubComponents(OriginNextImage, { Protected });
+export * from './origin-next-image';
+export * from './protected-next-image';
 
-export default NextImage;
+export const NextImage = withSubComponents(OriginNextImage, { Protected });

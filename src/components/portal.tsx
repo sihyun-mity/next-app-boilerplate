@@ -8,14 +8,14 @@ type Props = {
   children: ReactNode;
 };
 
-export default dynamic(
+export const Portal = dynamic(
   () =>
-    Promise.resolve(({ children }: Props) => {
+    Promise.resolve(function ({ children }: Readonly<Props>) {
       const node = document.querySelector('#next-app-portal');
 
       if (node) return createPortal(children, node);
 
       return null;
     }),
-  { ssr: false },
+  { ssr: false }
 );

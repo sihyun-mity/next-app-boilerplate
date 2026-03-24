@@ -36,7 +36,7 @@ type Props = Omit<ImageProps, 'width' | 'height' | 'src' | 'alt' | 'objectFit'> 
   fallbackSrc?: ComponentProps<typeof Image>['src'] | null;
 };
 
-export default function NextImage({
+export function OriginNextImage({
   width = '100%',
   height = 'auto',
   maxWidth,
@@ -63,8 +63,7 @@ export default function NextImage({
   fallbackAspectRatio = 'square',
   fallbackSrc,
   ...props
-}: Props): ReactNode {
-  const isRemoteOriginImage = typeof src === 'string' && src.startsWith('http');
+}: Readonly<Props>): ReactNode {
   const [isError, setIsError] = useState<boolean>(!src);
 
   const style: CSSProperties = useMemo(() => {

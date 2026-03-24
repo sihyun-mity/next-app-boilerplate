@@ -1,10 +1,12 @@
-import { MEDIA_STATE_DEFAULT_VALUE } from '@/stores/media/index.constant';
-import { MediaStore } from '@/stores/media/index.type';
-import { create } from 'zustand';
+'use client';
 
-const useMediaStore = create<MediaStore>()((set) => ({
-  ...MEDIA_STATE_DEFAULT_VALUE,
+import { create } from 'zustand';
+import { MEDIA_STORE_DEFAULT_VALUE, MediaStore } from '.';
+
+export * from './index.type';
+export * from './index.constants';
+
+export const useMediaStore = create<MediaStore>()((set) => ({
+  ...MEDIA_STORE_DEFAULT_VALUE,
   setMedia: (media) => set({ ...media }),
 }));
-
-export default useMediaStore;

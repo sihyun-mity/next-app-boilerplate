@@ -1,7 +1,6 @@
 'use client';
 
 import { type RefObject, useCallback, useLayoutEffect } from 'react';
-import { IS_SERVER } from 'swr/_internal';
 
 interface Props {
   focusedRef: RefObject<HTMLElement | null>;
@@ -10,7 +9,7 @@ interface Props {
   initialScroll?: boolean;
 }
 
-export function useFocusScroll({ focusedRef, parentRef, scrollOffset = 0, initialScroll }: Props) {
+export function useFocusScroll({ focusedRef, parentRef, scrollOffset = 0, initialScroll }: Readonly<Props>) {
   const scroll = useCallback(
     (behavior?: ScrollBehavior) => {
       if (parentRef.current && focusedRef.current) {
@@ -36,7 +35,7 @@ export function useFocusScroll({ focusedRef, parentRef, scrollOffset = 0, initia
   );
 
   useLayoutEffect(() => {
-    if (!IS_SERVER && initialScroll) scroll();
+    if (typeof window !== 'undefined' && initialScroll) scroll();
   }, [initialScroll, scroll]);
 
   return { scroll };
