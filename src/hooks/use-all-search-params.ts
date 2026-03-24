@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 import { isValidQuery } from '@/utils';
+import { ParsedUrlQuery } from '@/types';
 
 export function useAllSearchParams() {
   const searchParams = useSearchParams();

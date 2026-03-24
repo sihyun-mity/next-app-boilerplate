@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import queryString from 'query-string';
 import { useCallback } from 'react';
 import { useAllSearchParams } from '@/hooks';
+import { ParsedUrlQuery } from '@/types';
 
 type UseSearchQuerySetOptions = {
   replace?: boolean;

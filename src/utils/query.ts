@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import queryString from 'query-string';
+import { ParsedUrlQuery } from '@/types';
 
 export const isValidQuery = (value: any): boolean =>
   value !== undefined && value !== null && value !== 'undefined' && value !== 'null' && value.length > 0;
