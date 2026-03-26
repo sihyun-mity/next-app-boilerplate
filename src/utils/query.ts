@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import queryString from 'query-string';
-import { ParsedUrlQuery } from '@/types';
 
 export const isValidQuery = (value: any): boolean =>
   value !== undefined && value !== null && value !== 'undefined' && value !== 'null' && value.length > 0;
@@ -36,7 +35,13 @@ export const removeFromQuery = (query: string | string[] | undefined, value: str
   return undefined;
 };
 
-export const createHrefQuery = ({ pathname, query = {} }: { pathname: string; query?: ParsedUrlQuery }): string => {
+export const createHrefQuery = ({
+  pathname,
+  query = {},
+}: {
+  pathname: string;
+  query?: Parameters<typeof queryString.stringify>[0];
+}): string => {
   if (!Object.keys(query).length) return pathname;
 
   const stringifyQuery = queryString.stringify({ ...query });
