@@ -95,6 +95,8 @@ export function OriginNextImage({
   const isLocalSvgImage =
     (typeof renderSrc !== 'string' && !!(renderSrc as StaticImageData)?.src?.endsWith?.('svg')) ||
     (typeof renderSrc === 'string' && !renderSrc.startsWith('http') && renderSrc.endsWith('svg'));
+  const isBlobImage = typeof renderSrc === 'string' && renderSrc.startsWith('blob:');
+  const isUnsupportedPlaceholder = isRemoteImage || isPathImage || isLocalSvgImage || isBlobImage;
 
   const handleError = useCallback(
     (e: SyntheticEvent<HTMLImageElement, Event>) => {
@@ -115,7 +117,7 @@ export function OriginNextImage({
       sizes="100%"
       className={cn({ 'bg-gray-300': isError }, className)}
       unoptimized={unoptimized !== undefined ? unoptimized : isRemoteImage}
-      placeholder={isRemoteImage || isPathImage || isLocalSvgImage ? 'empty' : placeholder}
+      placeholder={isUnsupportedPlaceholder ? 'empty' : placeholder}
       quality={quality}
       onError={handleError}
       {...props}
