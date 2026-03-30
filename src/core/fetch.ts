@@ -17,3 +17,16 @@ export const fetchExtended = returnFetch({
     },
   },
 });
+
+export const createFormData = (data?: Record<string, string | number | boolean | Blob | File>) => {
+  const form = new FormData();
+
+  if (data) {
+    Object.entries(data).forEach(([key, value]) => {
+      const isBinaryData = value instanceof File || value instanceof Blob;
+      form.append(key, isBinaryData ? value : value.toString());
+    });
+  }
+
+  return form;
+};
