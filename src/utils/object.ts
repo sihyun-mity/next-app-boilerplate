@@ -47,11 +47,13 @@ export const hasAllValues = <T extends Record<string, any>>(obj: T): boolean => 
 
 export const withSubComponents = <T extends ComponentProps<any>, Sub extends Record<string, unknown>>(
   component: T,
-  subComponents: Sub,
+  subComponents: Sub
 ) => {
   const result = component as T & { readonly [K in keyof Sub]: Sub[K] };
 
   for (const key in subComponents) {
+    if (Object.prototype.hasOwnProperty.call(result, key)) continue;
+
     Object.defineProperty(result, key, {
       value: subComponents[key],
       writable: false,
