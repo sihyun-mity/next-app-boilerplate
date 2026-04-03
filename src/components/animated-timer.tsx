@@ -8,7 +8,7 @@ type Props = Omit<ComponentProps<'div'>, 'children'> & {
   value: number;
 };
 
-export function AnimatedTimer({ value, className, ...props }: Props) {
+export function AnimatedTimer({ value, className, ...props }: Readonly<Props>) {
   const [displayedValue, setDisplayedValue] = useState<number>(value);
   const componentId = useId();
 
