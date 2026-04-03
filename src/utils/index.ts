@@ -10,3 +10,4 @@ export * from './ref';
 export * from './next';
 export * from './class';
 export * from './boolean';
+export * from './date';
