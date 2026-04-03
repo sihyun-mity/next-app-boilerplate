@@ -17,6 +17,8 @@
     "@tailwindcss/cli": "^4.1.18",
     "clsx": "^2.1.1",
     "core-js": "^3.48.0",
+    "date-fns": "^4.1.0",
+    "framer-motion": "^12.38.0",
     "gsap": "^3.12.7",
     "mobile-detect": "^1.4.5",
     "next": "^16.2.1",
