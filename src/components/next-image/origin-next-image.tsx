@@ -1,6 +1,6 @@
 'use client';
 
-import Image, { type ImageProps, StaticImageData } from 'next/image';
+import Image, {type ImageProps, StaticImageData} from 'next/image';
 import {
   ComponentProps,
   CSSProperties,
@@ -11,8 +11,8 @@ import {
   useMemo,
   useState,
 } from 'react';
-import type { Property } from 'csstype';
-import { cn } from '@/utils';
+import type {Property} from 'csstype';
+import {cn} from '@/utils';
 
 type Props = Omit<ImageProps, 'width' | 'height' | 'src' | 'alt' | 'objectFit'> & {
   width?: Property.Width | number;
@@ -25,9 +25,9 @@ type Props = Omit<ImageProps, 'width' | 'height' | 'src' | 'alt' | 'objectFit'> 
   src?: ComponentProps<typeof Image>['src'];
   alt?: string;
   objectFit?: Property.ObjectFit;
-  containerClass?: string;
+  containerClassName?: string;
   containerStyle?: CSSProperties;
-  imageBoxClass?: string;
+  imageBoxClassName?: string;
   imageBoxStyle?: CSSProperties;
   imageStyle?: CSSProperties;
   onClick?: () => void;
@@ -47,9 +47,9 @@ export function OriginNextImage({
   objectFit = 'contain',
   src,
   alt = '',
-  containerClass,
+  containerClassName,
   containerStyle,
-  imageBoxClass,
+  imageBoxClassName,
   imageBoxStyle,
   imageStyle,
   className,
@@ -128,13 +128,13 @@ export function OriginNextImage({
 
   return (
     <div
-      className={containerClass}
+      className={containerClassName}
       style={{ width, height, maxWidth, maxHeight, minWidth, minHeight, ...containerStyle }}
       onClick={onClick}
       ref={containerRef}
     >
       <div
-        className={cn('relative h-full w-full', imageBoxClass)}
+        className={cn('relative h-full w-full', imageBoxClassName)}
         style={{ paddingBottom: responsiveRatio, ...imageBoxStyle }}
       >
         {responsiveRatio ? <picture className="absolute top-0 left-0 h-full w-full">{element}</picture> : element}
