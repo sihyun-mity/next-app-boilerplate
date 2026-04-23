@@ -19,7 +19,6 @@ button:disabled {
   cursor: not-allowed;
 }
 
-input,
-label {
+.flex-1 {
   min-width: 0;
 }
