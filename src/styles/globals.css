@@ -18,3 +18,8 @@ button:not(:disabled) {
 button:disabled {
   cursor: not-allowed;
 }
+
+input,
+label {
+  min-width: 0;
+}
