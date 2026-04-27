@@ -15,6 +15,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   userScalable: false,
   viewportFit: 'cover',
+  interactiveWidget: 'resizes-content',
 };
 
 const pretendard = localFont({
