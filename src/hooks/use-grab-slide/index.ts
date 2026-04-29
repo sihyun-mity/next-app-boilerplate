@@ -4,6 +4,19 @@ import { useCallback, useRef, useState } from 'react';
 
 import styles from './index.module.scss';
 
+/**
+ * 마우스 드래그(grab + drag)로 가로 스크롤을 조작할 수 있게 해 주는 훅.
+ *
+ * - 마우스로 컨테이너를 누른 채 좌우로 끌면 스크롤이 이동한다.
+ * - 드래그 거리가 10px 을 넘으면, 직후의 자식 노드 클릭 이벤트를 막아 "드래그 끝의 우발적 클릭" 을
+ *   방지한다. 드래그 거리가 10px 이하라면 클릭이 정상 통과된다.
+ * - 반환된 `ref` 는 ref 콜백으로, 노드가 바뀌면 자동으로 리스너를 재등록한다.
+ * - `style` 은 `cursor: grab` 등 시각적 피드백을 주는 SCSS 모듈 클래스명이다.
+ *
+ * 터치 이벤트는 다루지 않으므로, 모바일/터치 디바이스에서는 브라우저 네이티브 스크롤이 그대로 동작한다.
+ *
+ * @returns `{ ref, style }`
+ */
 export function useGrabSlide() {
   const slider = useRef<HTMLDivElement | null>(null);
   const [isDown, setIsDown] = useState<boolean>(false);

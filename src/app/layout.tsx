@@ -26,6 +26,18 @@ const pretendard = localFont({
   preload: false,
 });
 
+/**
+ * App Router 의 루트 레이아웃.
+ *
+ * 모든 페이지를 감싸며, 다음 사이드 이펙트 / 마운트 포인트가 정해진 순서로 위치한다.
+ * 1. `<Polyfill />` — core-js 폴리필을 가장 먼저 주입.
+ * 2. `<Suspense>{children}` — 페이지 트리. 로딩 경계의 기본 fallback 은 비워 둠.
+ * 3. `<MobileDetector />` — User-Agent 분석 결과를 zustand 에 기록 (`isReady` 가 `true` 가 됨).
+ * 4. `#next-app-portal` — `<Portal />` 컴포넌트가 children 을 포털링하는 마운트 포인트.
+ *
+ * `cn` 으로 합쳐진 body 클래스는 Pretendard 가변 폰트 변수, 한글 줄바꿈 규칙(`break-keep`),
+ * 터치 스크롤 방향 제한(`touch-pan-y`), 사용자 텍스트 선택 비활성화(`select-none`) 등을 적용한다.
+ */
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="ko">

@@ -1,6 +1,6 @@
 'use client';
 
-import Image, {type ImageProps, StaticImageData} from 'next/image';
+import Image, { type ImageProps, StaticImageData } from 'next/image';
 import {
   ComponentProps,
   CSSProperties,
@@ -11,8 +11,8 @@ import {
   useMemo,
   useState,
 } from 'react';
-import type {Property} from 'csstype';
-import {cn} from '@/utils';
+import type { Property } from 'csstype';
+import { cn } from '@/utils';
 
 type Props = Omit<ImageProps, 'width' | 'height' | 'src' | 'alt' | 'objectFit'> & {
   width?: Property.Width | number;
@@ -36,6 +36,23 @@ type Props = Omit<ImageProps, 'width' | 'height' | 'src' | 'alt' | 'objectFit'> 
   fallbackSrc?: ComponentProps<typeof Image>['src'] | null;
 };
 
+/**
+ * `next/image` 를 감싸 컨테이너 + 박스 + 이미지 3 단 구조를 자동 구성하는 이미지 컴포넌트.
+ *
+ * 주요 동작
+ * - `responsiveRatio` (예: `'56.25%'`) 가 주어지면 자동으로 `fill` 모드 + `padding-bottom` 트릭으로
+ *   가로:세로 비율을 유지한다.
+ * - `width`/`height` 는 `Property.Width`/`Property.Height` 타입을 받으므로 `'100%'`, `'auto'`,
+ *   숫자(px) 등 CSS 값이 모두 가능하다.
+ * - `src` 가 없거나 로드에 실패하면 `fallbackSrc` 또는 비율별 기본 이미지를 시도한다 (`fallbackAspectRatio`).
+ *   기본 이미지는 프로젝트에 추가한 뒤 import 해서 활성화하도록 주석으로 표시되어 있다.
+ * - 외부 URL(`http`), 절대 경로(`/...`), 로컬 SVG, blob URL 처럼 `next/image` 의 blur placeholder 가
+ *   적용되지 않는 케이스는 자동으로 `placeholder='empty'` 로 강제된다.
+ * - 외부 URL 은 기본적으로 `unoptimized` 가 활성화된다 (호출 측에서 명시적으로 덮어쓸 수 있음).
+ *
+ * 일반적인 페이지 이미지에는 이 컴포넌트를, 우클릭/드래그 저장을 막아야 하는 이미지에는
+ * `NextImage.Protected` (`ProtectedNextImage`) 를 사용한다.
+ */
 export function OriginNextImage({
   width = '100%',
   height = 'auto',
