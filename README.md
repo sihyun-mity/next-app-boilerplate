@@ -38,7 +38,7 @@ VS Code / IntelliJ Idea 용 사전 실행 구성(`scripts/Build.run.xml`, `scrip
 - **언어 / 빌드**: TypeScript 5, `target: ES2017`, `module: esnext`, `moduleResolution: bundler`
 - **스타일**: Tailwind CSS 4 (`@tailwindcss/postcss`) + `tailwind-merge` + `clsx` + `tailwindcss-safe-area`
 - **상태**: zustand (전역 client-only store)
-- **데이터 패칭**: SWR + `return-fetch` 기반 `fetchExtended`
+- **데이터 패칭**: `@tanstack/react-query` + `@lukemorales/query-key-factory` + `return-fetch` 기반 `fetchExtended`
 - **애니메이션**: framer-motion + GSAP (ScrollTrigger 포함)
 - **유틸**: `date-fns`, `query-string`, `mobile-detect`, `usehooks-ts`, `core-js`
 - **품질**: ESLint(`eslint-config-next`), Prettier (+ `prettier-plugin-tailwindcss`), husky + lint-staged + tsc-files
@@ -53,6 +53,7 @@ src/
 ├── actions/            # 'use server' Server Actions (예: getServerTime)
 ├── components/         # 재사용 컴포넌트 (Polyfill, MobileDetector, NextImage, Portal, ...)
 ├── hooks/              # 커스텀 훅 (useMedia, useSearchQuery, useScrollPage, ...)
+├── providers/          # 앱 전역 Provider (QueryProvider, react-query 키 팩토리)
 ├── stores/             # zustand store (media, mobile)
 ├── core/               # 인프라 레벨 모듈 (fetchExtended, createFormData)
 ├── styles/             # 전역 CSS (globals, variables, colors, fonts, layout, utility, gsap)
@@ -71,7 +72,7 @@ public/
 | `#/*` | `./public/*` |
 
 각 폴더의 `index.ts` 가 하위 모듈을 재수출하므로, 일반적으로 `@/utils`, `@/hooks`, `@/components`,
-`@/stores`, `@/actions`, `@/core`, `@/types` 형태로 임포트합니다.
+`@/stores`, `@/actions`, `@/core`, `@/types`, `@/providers` 형태로 임포트합니다.
 
 ---
 

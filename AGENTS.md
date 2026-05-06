@@ -37,7 +37,7 @@ outdated — the docs are the source of truth.
 - **언어**: TypeScript 5, `strict: true`, `target: ES2017`, `moduleResolution: bundler`
 - **스타일**: Tailwind CSS 4 + `cn(clsx + tailwind-merge)` 패턴
 - **상태**: zustand (모든 store 는 `'use client'`)
-- **데이터**: SWR + `fetchExtended` (`return-fetch`)
+- **데이터**: `@tanstack/react-query` + `@lukemorales/query-key-factory` + `fetchExtended` (`return-fetch`)
 - **모션**: framer-motion, GSAP (ScrollTrigger 등록은 `useScrollFadeIn` 에서 1회)
 - **품질 게이트**: ESLint(`eslint-config-next`) + Prettier + husky pre-commit (lint-staged)
 
@@ -53,10 +53,11 @@ outdated — the docs are the source of truth.
 
 ```
 src/
-├── app/        App Router 진입점. layout.tsx 는 Polyfill / Suspense / MobileDetector / #next-app-portal 마운트.
+├── app/        App Router 진입점. layout.tsx 는 Polyfill / QueryProvider / Suspense / MobileDetector / #next-app-portal 마운트.
 ├── actions/    'use server' Server Action. 파일명은 *.actions.ts.
 ├── components/ 재사용 컴포넌트. 'use client' 또는 서버 컴포넌트. index.ts 재수출.
 ├── hooks/      커스텀 훅. 모두 'use client'. 파일명은 use-*.ts(또는 use-*/index.ts).
+├── providers/  앱 전역 Provider 와 react-query 키 팩토리 (`QueryProvider`, `queries`).
 ├── stores/     zustand store. 도메인별 폴더 + index.ts/index.type.ts/index.constants.ts.
 ├── core/       인프라 레벨 모듈 (fetchExtended 등). 비즈니스 로직 금지.
 ├── styles/     전역 CSS. globals.css 가 나머지를 import.
@@ -124,7 +125,7 @@ public/
   기존 코드의 흐름).
 - 같은 도메인 내부의 형제 파일은 `from '.'` 또는 `from './index.type'` 처럼 명시.
 - 폴더의 `index.ts` 가 `export * from './...'` 으로 재수출하고 있으므로, 외부에서는 `@/utils`,
-  `@/hooks`, `@/components`, `@/stores`, `@/types`, `@/actions`, `@/core` 형태로 임포트한다.
+  `@/hooks`, `@/components`, `@/stores`, `@/types`, `@/actions`, `@/core`, `@/providers` 형태로 임포트한다.
 
 ### 3.5 Prettier
 
@@ -149,15 +150,27 @@ public/
 
 ### 4.1 Server Action 호출
 
-`actions/*.actions.ts` 의 함수는 `'use server'`. 클라이언트에서는 SWR 와 함께 사용한다.
+`actions/*.actions.ts` 의 함수는 `'use server'`. 클라이언트에서는 `@tanstack/react-query` 의 `useQuery`
+(혹은 `useMutation`) 와 함께 사용한다. 쿼리 키는 `@lukemorales/query-key-factory` 로 생성하여
+`@/providers` 의 `queries` 트리에 등록한다.
 
 ```ts
-const { data } = useSWR('use-server-now', getServerTime, {
-  dedupingInterval: 1000,
-  revalidateOnFocus: false,
-  keepPreviousData: true,
-});
+import { useQuery } from '@tanstack/react-query';
+import { queries } from '@/providers';
+
+const { data } = useQuery(queries.serverTime.now());
 ```
+
+새 도메인 쿼리를 추가할 때는:
+
+1. `src/providers/query-provider/query-keys/<domain>-query-keys.ts` 에 `createQueryKeys('<domain>', { ... })`
+   로 키 팩토리를 정의한다 (`queryKey` + `queryFn`).
+2. 같은 폴더의 `index.ts` 에서 `export * from './<domain>-query-keys'` 로 재수출하고,
+   `mergeQueryKeys(...)` 인자에 추가한다.
+3. 호출 측에서는 `useQuery({ ...queries.<domain>.<query>(args), enabled, staleTime, ... })` 형태로 사용한다.
+
+`QueryClient` 의 기본 `staleTime` 은 2초로 설정되어 있어 짧은 시간 내 중복 요청이 자연스럽게 합쳐진다.
+캐시를 더 길게 유지하고 싶다면 호출부에서 `staleTime` 을 직접 지정한다.
 
 ### 4.2 외부 API 호출
 
