@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { ReactNode, Suspense } from 'react';
+import { Suspense } from 'react';
 import '@/styles/globals.css';
 import { MobileDetector, Polyfill } from '@/components';
 import { QueryProvider } from '@/providers';
@@ -41,7 +41,7 @@ const pretendard = localFont({
  * `cn` 으로 합쳐진 body 클래스는 Pretendard 가변 폰트 변수, 한글 줄바꿈 규칙(`break-keep`),
  * 터치 스크롤 방향 제한(`touch-pan-y`), 사용자 텍스트 선택 비활성화(`select-none`) 등을 적용한다.
  */
-export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
+export default function RootLayout({ children }: Readonly<LayoutProps<'/'>>) {
   return (
     <html lang="ko">
       <body
