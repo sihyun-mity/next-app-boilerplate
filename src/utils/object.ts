@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-import { ComponentProps } from 'react';
+import { ComponentType } from 'react';
 
 /**
  * 두 객체가 동일한 키 집합을 가지며 각 키의 값이 정확히 같은지(`===`) 비교한다.
@@ -10,7 +8,7 @@ import { ComponentProps } from 'react';
  *
  * @returns 모든 키와 값이 일치하면 `true`
  */
-export const compareAllKeys = <T extends Record<string, any>>(obj1: T, obj2: T): boolean => {
+export const compareAllKeys = <T extends Record<string, unknown>>(obj1: T, obj2: T): boolean => {
   const keys1 = Object.keys(obj1);
   const keys2 = Object.keys(obj2);
 
@@ -39,7 +37,7 @@ export const compareAllKeys = <T extends Record<string, any>>(obj1: T, obj2: T):
  * 모든 값이 위 조건을 통과해야만 `true` 를 반환한다. 객체 자체에 키가 없으면 `false`.
  * 폼 제출 가능 여부 같은 검사에 사용한다.
  */
-export const hasAllValues = <T extends Record<string, any>>(obj: T): boolean => {
+export const hasAllValues = <T extends Record<string, unknown>>(obj: T): boolean => {
   if (!Object.values(obj).length) {
     return false;
   }
@@ -77,7 +75,7 @@ export const hasAllValues = <T extends Record<string, any>>(obj: T): boolean => 
  * export default withSubComponents(Card, { Header });
  * // → <Card.Header />
  */
-export const withSubComponents = <T extends ComponentProps<any>, Sub extends Record<string, unknown>>(
+export const withSubComponents = <T extends ComponentType<never>, Sub extends Record<string, unknown>>(
   component: T,
   subComponents: Sub
 ) => {

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 /**
  * Fisher–Yates 알고리즘으로 배열을 무작위로 섞는다.
  *
@@ -11,7 +9,7 @@
  * const items = [1, 2, 3, 4];
  * shuffle(items); // items 자체가 무작위로 재배치된다
  */
-export const shuffle = (list: any[]) => {
+export const shuffle = <T>(list: T[]) => {
   for (let i = list.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [list[i], list[j]] = [list[j], list[i]];
