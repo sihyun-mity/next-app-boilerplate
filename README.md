@@ -122,7 +122,6 @@ public/
 | `promise` | `getFulfilledResults`, `getRejectedResults`, `sleep` |
 | `query` | `isValidQuery`, `isIncludedInQuery`, `addToQuery`, `removeFromQuery`, `createHrefQuery` |
 | `ref` | `mergeRefs` |
-| `scroll` | `scroll.lock()`, `scroll.unlock()` |
 
 ### Stores (`src/stores`)
 

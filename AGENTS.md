@@ -307,7 +307,7 @@ stores/<domain>/
 
 - `dangerouslySetInnerHTML` 은 사용 전에 반드시 의도/이스케이프를 검토.
 - `console.log` 를 production 코드에 남기지 않는다 (이미 `console.error` 만 의도적으로 사용 중).
-- 직접 `document.documentElement.style.overflow` 를 만지지 않는다 — `scroll.lock()/unlock()` 사용.
+- 직접 `document.documentElement.style.overflow` 를 만지지 않는다 — 배경 스크롤을 잠가야 하면 `usehooks-ts` 의 `useScrollLock` 훅을 사용한다.
 - 전역 ref / 전역 변수로 컴포넌트 간 통신하지 않는다 — zustand store 또는 context 사용.
 - 의미 없는 주석(`// 변수 선언`)이나 task tracker 주석(`// 추후 수정 예정`) 을 남기지 않는다. 필요하면
   TODO 대신 이슈 트래커로 옮긴다.
