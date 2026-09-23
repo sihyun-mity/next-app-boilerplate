@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from 'next';
 import { Suspense } from 'react';
+import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 import '@/styles/globals.css';
 import { MobileDetector, Polyfill } from '@/components';
 import { QueryProvider } from '@/providers';
-import { cn, staticMetadata } from '@/utils';
-import localFont from 'next/font/local';
+import { staticMetadata } from '@/utils';
 
 export const metadata: Metadata = staticMetadata({
   title: 'Create Next App',
@@ -19,14 +19,6 @@ export const viewport: Viewport = {
   interactiveWidget: 'resizes-content',
 };
 
-const pretendard = localFont({
-  src: '../../public/fonts/PretendardVariable.woff2',
-  display: 'swap',
-  weight: '45 920',
-  variable: '--font-pretendard',
-  preload: false,
-});
-
 /**
  * App Router 의 루트 레이아웃.
  *
@@ -38,18 +30,16 @@ const pretendard = localFont({
  * 4. `<MobileDetector />` — User-Agent 분석 결과를 zustand 에 기록 (`isReady` 가 `true` 가 됨).
  * 5. `#next-app-portal` — `<Portal />` 컴포넌트가 children 을 포털링하는 마운트 포인트.
  *
- * `cn` 으로 합쳐진 body 클래스는 Pretendard 가변 폰트 변수, 한글 줄바꿈 규칙(`break-keep`),
+ * body 클래스는 Pretendard 가변 폰트(`font-pretendard`), 한글 줄바꿈 규칙(`break-keep`),
  * 터치 스크롤 방향 제한(`touch-pan-y`), 사용자 텍스트 선택 비활성화(`select-none`) 등을 적용한다.
+ *
+ * Pretendard 는 `pretendard` npm 패키지의 dynamic subset CSS 를 import 한다. `unicode-range` 로 쪼개진
+ * woff2 중 실제 페이지에 쓰인 글리프 구간만 내려받으므로, 한글 전체 폰트(약 2MB)를 한 번에 받지 않는다.
  */
 export default function RootLayout({ children }: Readonly<LayoutProps<'/'>>) {
   return (
     <html lang="ko">
-      <body
-        className={cn(
-          pretendard.variable,
-          'touch-pan-y bg-background font-pretendard break-keep text-foreground antialiased select-none'
-        )}
-      >
+      <body className="touch-pan-y bg-background font-pretendard break-keep text-foreground antialiased select-none">
         <Polyfill />
 
         <QueryProvider>

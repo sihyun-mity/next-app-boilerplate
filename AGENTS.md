@@ -65,7 +65,6 @@ src/
 ├── types/      전역 타입 / 환경 변수 선언 / 공유 타입.
 └── utils/      순수 함수. 사이드 이펙트와 React import 최소화.
 public/
-├── fonts/      로컬 폰트 (Pretendard Variable woff2 등).
 └── *.svg       정적 자산.
 ```
 

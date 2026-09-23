@@ -60,7 +60,6 @@ src/
 ├── types/              # 전역 타입 / 환경 변수 / 쿼리 타입
 └── utils/              # 순수 유틸리티 (array, class(cn), date, query, ...)
 public/
-├── fonts/              # Pretendard Variable woff2 등 로컬 폰트
 └── *.svg
 ```
 
@@ -163,12 +162,12 @@ public/
 
 - `variables.css` — 전역 CSS 커스텀 프로퍼티
 - `colors.css` — Tailwind 와 연동되는 색상 토큰
-- `fonts.css` — Pretendard 가변 폰트 정의
+- `fonts.css` — Pretendard 가변 폰트 정의 (폰트 파일은 루트 layout 에서 `pretendard` npm 패키지의 dynamic subset CSS 를 import)
 - `layout.css` — 페이지 레이아웃용 클래스
 - `utility.css` — 자체 유틸리티 클래스
 - `gsap.css` — ScrollTrigger 등 GSAP 관련 보정
 
-루트 layout 의 `<body>` 클래스에는 Pretendard 변수, 한글 줄바꿈 (`break-keep`), 사용자 텍스트 선택
+루트 layout 의 `<body>` 클래스에는 Pretendard 폰트(`font-pretendard`), 한글 줄바꿈 (`break-keep`), 사용자 텍스트 선택
 비활성화 (`select-none`), 세로 터치 스크롤만 허용 (`touch-pan-y`) 이 기본 적용됩니다.
 
 ---
