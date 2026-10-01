@@ -39,7 +39,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<LayoutProps<'/'>>) {
   return (
     <html lang="ko">
-      <body className="touch-pan-y bg-background font-pretendard wrap-anywhere break-keep text-foreground antialiased select-none">
+      <body className="touch-pan-x touch-pan-y bg-background font-pretendard wrap-anywhere break-keep text-foreground antialiased select-none">
         <Polyfill />
 
         <QueryProvider>
