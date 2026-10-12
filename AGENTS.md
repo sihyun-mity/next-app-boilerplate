@@ -57,7 +57,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ```
 (root)
-├── app/        App Router 진입점. layout.tsx 는 Polyfill / QueryProvider / Suspense / MobileDetector / #next-app-portal 마운트.
+├── app/        App Router 진입점. layout.tsx 는 Polyfill / QueryProvider / MobileDetector / #next-app-portal 마운트.
 ├── actions/    'use server' Server Action. 파일명은 *.actions.ts.
 ├── components/ 재사용 컴포넌트. 'use client' 또는 서버 컴포넌트. index.ts 재수출.
 ├── hooks/      커스텀 훅. 모두 'use client'. 파일명은 use-*.ts(또는 use-*/index.ts).
@@ -264,8 +264,10 @@ stores/<domain>/
 
 ## 8. Next.js / App Router 규칙
 
-- `app/layout.tsx` 의 마운트 순서를 임의로 바꾸지 않는다 (`Polyfill` → `Suspense{children}` →
+- `app/layout.tsx` 의 마운트 순서를 임의로 바꾸지 않는다 (`Polyfill` → `QueryProvider{children}` →
   `MobileDetector` → `#next-app-portal`).
+- **루트 layout 에 `<Suspense>` 를 다시 추가하지 않는다.** 루트 경계는 blocking-route 빌드 검증을 무력화하고,
+  빈 fallback 으로 정적 셸을 빈 화면으로 만든다. 경계는 동적 데이터를 읽는 컴포넌트 바로 바깥에 둔다.
 - 메타데이터는 `staticMetadata` 로 감싼다. `viewport` 는 `Viewport` 타입을 명시.
 - 새 라우트의 metadata 는 페이지 / 레이아웃 단위로 가까이 둔다 (App Router 권장 방식).
 - Route Handler 는 `app/api/.../route.ts`. CORS 는 `allowCors` 로 통일.
@@ -276,7 +278,10 @@ stores/<domain>/
     (`node_modules/next/dist/docs/01-app/01-getting-started/08-caching.md`).
   - `export const dynamic` / `revalidate` / `fetchCache` 같은 기존 route segment config 는 사용하지 않는다.
   - `cookies()` / `headers()` / `searchParams` / `Date.now()` 등 요청 시점 값을 읽는 서버 컴포넌트는 `<Suspense>` 안에
-    둬야 빌드가 통과한다. 루트 layout 의 `<Suspense>{children}</Suspense>` 가 기본 경계 역할을 한다.
+    둬야 빌드가 통과한다. 루트 경계가 없으므로 빠뜨리면 빌드가 실패해 조기에 발견된다 — `instant = false` 로
+    회피하기보다 의미 있는 fallback 을 가진 `<Suspense>` / `loading.tsx` 를 추가한다.
+  - `useSearchParams` 를 쓰는 훅(`useSearchQuery`, `useAllSearchParams`) 을 사용하는 클라이언트 컴포넌트도
+    호출 측에서 `<Suspense>` 로 감싼다.
   - 클라이언트 내비게이션 시 이전 라우트는 언마운트 대신 `<Activity mode="hidden">` 으로 보존된다. effect 는
     정리 후 재실행되므로 cleanup 을 반드시 작성한다.
 - Tailwind 는 PostCSS 가 아닌 `turbopack.rules['*.css']` 의 `@tailwindcss/turbopack` 로더로 처리된다.

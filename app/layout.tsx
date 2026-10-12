@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import { Suspense } from 'react';
 import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 import '@/styles/globals.css';
 import { MobileDetector, Polyfill } from '@/components';
@@ -42,9 +41,12 @@ export const viewport: Viewport = {
  *
  * 모든 페이지를 감싸며, 다음 사이드 이펙트 / 마운트 포인트가 정해진 순서로 위치한다.
  * 1. `<Polyfill />` — core-js 폴리필을 가장 먼저 주입.
- * 2. `<QueryProvider>` — `@tanstack/react-query` 의 `QueryClientProvider`. Suspense 보다 바깥에 위치해야
- *    children 트리 어디서든 `useQuery` 가 동작한다.
- * 3. `<Suspense>{children}` — 페이지 트리. 로딩 경계의 기본 fallback 은 비워 둠.
+ * 2. `<QueryProvider>` — `@tanstack/react-query` 의 `QueryClientProvider`. children 트리 어디서든 `useQuery` 가
+ *    동작하도록 페이지 트리를 감싼다.
+ * 3. `{children}` — 페이지 트리. 루트에는 `<Suspense>` 를 두지 않는다. 루트 경계가 모든 페이지를 감싸면
+ *    Cache Components 의 blocking-route 검증(Suspense 밖의 요청 시점 데이터 접근 → 빌드 실패)이 무력화되고,
+ *    빈 fallback 때문에 정적 셸이 빈 화면이 된다. 동적 데이터가 필요한 곳에서 `<Suspense fallback>` /
+ *    `loading.tsx` 로 직접 경계를 둔다.
  * 4. `<MobileDetector />` — User-Agent 분석 결과를 zustand 에 기록 (`isReady` 가 `true` 가 됨).
  * 5. `#next-app-portal` — `<Portal />` 컴포넌트가 children 을 포털링하는 마운트 포인트.
  *
@@ -77,7 +79,7 @@ export default function RootLayout({ children }: Readonly<LayoutProps<'/'>>) {
         <Polyfill />
 
         <QueryProvider>
-          <Suspense>{children}</Suspense>
+          {children}
 
           <MobileDetector />
 
