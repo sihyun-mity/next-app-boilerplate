@@ -36,7 +36,8 @@ VS Code / IntelliJ Idea 용 사전 실행 구성(`scripts/Build.run.xml`, `scrip
 
 - **프레임워크**: Next.js 16 (App Router) + React 19 + React Compiler
 - **언어 / 빌드**: TypeScript 5, `target: ES2017`, `module: esnext`, `moduleResolution: bundler`
-- **스타일**: Tailwind CSS 4 (`@tailwindcss/postcss`) + `tailwind-merge` + `clsx` + `tailwindcss-safe-area`
+- **렌더링**: Cache Components + Partial Prefetching
+- **스타일**: Tailwind CSS 4 (`@tailwindcss/turbopack` 로더) + `tailwind-merge` + `clsx` + `tailwindcss-safe-area`
 - **상태**: zustand (전역 client-only store)
 - **데이터 패칭**: `@tanstack/react-query` + `@lukemorales/query-key-factory` + `return-fetch` 기반 `fetchExtended`
 - **애니메이션**: framer-motion + GSAP (ScrollTrigger 포함)
@@ -47,8 +48,10 @@ VS Code / IntelliJ Idea 용 사전 실행 구성(`scripts/Build.run.xml`, `scrip
 
 ## 디렉터리 구조
 
+최신 `create-next-app` 기본값과 동일하게 `src/` 디렉터리 없이 프로젝트 루트에 소스 폴더를 둡니다.
+
 ```
-src/
+(root)
 ├── app/                # App Router 진입점 (layout, page, robots, ...)
 ├── actions/            # 'use server' Server Actions (예: getServerTime)
 ├── components/         # 재사용 컴포넌트 (Polyfill, MobileDetector, NextImage, Portal, ...)
@@ -67,7 +70,7 @@ public/
 
 | Alias | 대상 |
 | --- | --- |
-| `@/*` | `./src/*` |
+| `@/*` | `./*` |
 | `#/*` | `./public/*` |
 
 각 폴더의 `index.ts` 가 하위 모듈을 재수출하므로, 일반적으로 `@/utils`, `@/hooks`, `@/components`,
@@ -77,7 +80,7 @@ public/
 
 ## 핵심 기능 한눈에 보기
 
-### Components (`src/components`)
+### Components (`components`)
 
 | 컴포넌트 | 설명 |
 | --- | --- |
@@ -89,7 +92,7 @@ public/
 | `TextMotion` | 여러 텍스트를 일정 간격으로 순환 + 글자 단위 스태거 모션. |
 | `Skeleton` | `react-loading-skeleton` 의 얇은 래퍼. |
 
-### Hooks (`src/hooks`)
+### Hooks (`hooks`)
 
 | 훅 | 설명 |
 | --- | --- |
@@ -104,7 +107,7 @@ public/
 | `useSearchQuery` | URL 쿼리 읽기/쓰기/리셋 (`router.replace` 기본). |
 | `useServerNow` | Server Action 으로 받은 서버 시간을 매 초 갱신. |
 
-### Utils (`src/utils`)
+### Utils (`utils`)
 
 | 모듈 | 주요 export |
 | --- | --- |
@@ -122,7 +125,7 @@ public/
 | `query` | `isValidQuery`, `isIncludedInQuery`, `addToQuery`, `removeFromQuery`, `createHrefQuery` |
 | `ref` | `mergeRefs` |
 
-### Stores (`src/stores`)
+### Stores (`stores`)
 
 - `useMediaStore` — `sm / md / lg / xl` boolean. `useMedia` 훅이 갱신.
 - `useMobileStore` — `isMobile / isAndroid / isIOS / isReady`. `<MobileDetector />` 가 채워 넣음.
@@ -138,18 +141,21 @@ public/
 
 - **Next.js** (`next.config.ts`)
   - `experimental.scrollRestoration: true`
+  - `experimental.agentFeedback: false`
   - `reactCompiler: true`
+  - `cacheComponents: true`, `partialPrefetching: true`
+  - `turbopack.rules['*.css']` → `@tailwindcss/turbopack` 로더 (PostCSS 설정 파일 없음)
   - `images.formats: ['image/avif', 'image/webp']`
   - `images.qualities: [5..100]` 5 단위 전체 허용
 - **TypeScript** (`tsconfig.json`)
   - `strict: true`, `target: ES2017`, `module: esnext`, `moduleResolution: bundler`
-  - `paths`: `@/* → src/*`, `#/* → public/*`
+  - `paths`: `@/* → ./*`, `#/* → public/*`
 - **ESLint** (`eslint.config.mjs`)
   - `eslint-config-next/core-web-vitals` + `eslint-config-next/typescript`
 - **Prettier** (`prettier.config.mjs`)
   - `printWidth: 120`, `singleQuote: true`, `trailingComma: 'es5'`, `endOfLine: 'lf'`
   - `prettier-plugin-tailwindcss` 활성화 (`cn`, `clsx`, `tw`, `twMerge`, `cva` 인식)
-- **husky + lint-staged** (`.husky/pre-commit`, `.lintstagedrc.js`)
+- **husky + lint-staged** (`.husky/pre-commit`, `.lintstagedrc.mjs`)
   - 커밋 직전 `eslint --fix` + `prettier --write` 자동 적용
 - **Vercel 배포** (`vercel.json`)
   - 기본 region 은 `icn1` (Seoul) 단일 지정
@@ -158,17 +164,21 @@ public/
 
 ## 글로벌 스타일
 
-`src/styles/globals.css` 가 다음 모듈을 한 번에 임포트합니다.
+`styles/globals.css` 가 다음 모듈을 한 번에 임포트합니다.
 
 - `variables.css` — 전역 CSS 커스텀 프로퍼티
 - `colors.css` — Tailwind 와 연동되는 색상 토큰
-- `fonts.css` — Pretendard 가변 폰트 정의 (폰트 파일은 루트 layout 에서 `pretendard` npm 패키지의 dynamic subset CSS 를 import)
+- `fonts.css` — Pretendard 가변 폰트(`font-pretendard`) 정의 + Geist / Geist Mono 를 `font-sans` / `font-mono` 에 연결
+  (Pretendard 는 `pretendard` npm 패키지의 dynamic subset CSS, Geist 는 루트 layout 의 `next/font/google` 로 로드)
 - `layout.css` — 페이지 레이아웃용 클래스
 - `utility.css` — 자체 유틸리티 클래스
 - `gsap.css` — ScrollTrigger 등 GSAP 관련 보정
 
-루트 layout 의 `<body>` 클래스에는 Pretendard 폰트(`font-pretendard`), 한글 줄바꿈 (`break-keep`), 사용자 텍스트 선택
-비활성화 (`select-none`), 세로 터치 스크롤만 허용 (`touch-pan-y`) 이 기본 적용됩니다.
+루트 layout 은 최신 `create-next-app` 템플릿과 같이 `<html class="h-full">` + `<body class="flex min-h-full flex-col">`
+구조이며, 페이지 최상위 요소는 `flex-1` 로 남은 높이를 채웁니다. 상속되는 타이포그래피 설정(Geist 폰트 변수,
+Pretendard 기본 폰트 `font-pretendard`, 한글 줄바꿈 `break-keep wrap-anywhere`, `antialiased`)은 `<html>` 에,
+배경/전경색, 사용자 텍스트 선택 비활성화 (`select-none`), 터치 팬 제스처 제한 (`touch-pan-x touch-pan-y`) 은 `<body>` 에
+적용됩니다. 기본 본문 폰트는 Pretendard 이며, Geist 는 `font-sans` / `font-mono` 를 지정한 요소(첫 화면 등)에만 쓰입니다.
 
 ---
 

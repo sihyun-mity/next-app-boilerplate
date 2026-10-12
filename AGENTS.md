@@ -1,6 +1,6 @@
 <!-- BEGIN:nextjs-agent-rules -->
 
-# This is NOT the Next.js you know
+## This is NOT the Next.js you know
 
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
 
@@ -24,9 +24,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## 0. Always-do
 
 1. **Next.js 관련 작업 전에는 반드시 `node_modules/next/dist/docs/` 를 확인한다.** (위 섹션 참고)
-2. **`src/utils`, `src/hooks`, `src/components` 의 `index.ts` 재수출을 확인한 뒤**, 새 파일을 만들기 전에
+2. **`utils`, `hooks`, `components` 의 `index.ts` 재수출을 확인한 뒤**, 새 파일을 만들기 전에
    동일/유사 기능이 이미 있는지 검색한다 (예: `cn`, `staticMetadata`, `mergeRefs`, `useMedia`).
-3. **alias 를 일관되게 사용한다.** `@/...` 는 `src/`, `#/...` 는 `public/`. 상대 경로 (`../../`) 는 같은
+3. **alias 를 일관되게 사용한다.** `@/...` 는 프로젝트 루트, `#/...` 는 `public/`. 상대 경로 (`../../`) 는 같은
    기능 폴더 내부에서만 사용한다.
 4. 기능을 추가하면 해당 폴더의 `index.ts` 에 export 를 잊지 않는다.
 
@@ -36,10 +36,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 - **프레임워크**: Next.js 16 (App Router) / React 19 / React Compiler 활성화
 - **언어**: TypeScript 5, `strict: true`, `target: ES2017`, `moduleResolution: bundler`
-- **스타일**: Tailwind CSS 4 + `cn(clsx + tailwind-merge)` 패턴
+- **스타일**: Tailwind CSS 4 (`@tailwindcss/turbopack` 로더, PostCSS 미사용) + `cn(clsx + tailwind-merge)` 패턴
 - **상태**: zustand (모든 store 는 `'use client'`)
 - **데이터**: `@tanstack/react-query` + `@lukemorales/query-key-factory` + `fetchExtended` (`return-fetch`)
 - **모션**: framer-motion, GSAP (ScrollTrigger 등록은 `useScrollFadeIn` 에서 1회)
+- **렌더링**: Cache Components(`cacheComponents`) + Partial Prefetching(`partialPrefetching`) 활성화
 - **품질 게이트**: ESLint(`eslint-config-next`) + Prettier + husky pre-commit (lint-staged)
 
 런타임 / 패키지 매니저:
@@ -52,8 +53,10 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## 2. 디렉터리 구조와 책임
 
+최신 `create-next-app` 기본값과 동일하게 **`src/` 디렉터리를 쓰지 않고** 프로젝트 루트에 소스 폴더를 둔다.
+
 ```
-src/
+(root)
 ├── app/        App Router 진입점. layout.tsx 는 Polyfill / QueryProvider / Suspense / MobileDetector / #next-app-portal 마운트.
 ├── actions/    'use server' Server Action. 파일명은 *.actions.ts.
 ├── components/ 재사용 컴포넌트. 'use client' 또는 서버 컴포넌트. index.ts 재수출.
@@ -72,7 +75,7 @@ public/
 
 | Alias | 대상 |
 | --- | --- |
-| `@/*` | `./src/*` |
+| `@/*` | `./*` |
 | `#/*` | `./public/*` |
 
 새 파일을 만들 때 다른 폴더로 임포트가 필요하면 항상 alias 를 사용한다.
@@ -115,7 +118,7 @@ public/
   <div className={cn('relative overflow-hidden', className)} />
   ```
 - Tailwind 충돌은 `tailwind-merge` 가 알아서 정리하므로, 사용자 className 을 마지막에 둔다.
-- Prettier `tailwindStylesheet` 가 `./src/styles/globals.css` 로 설정되어 있어 클래스 정렬이 자동
+- Prettier `tailwindStylesheet` 가 `./styles/globals.css` 로 설정되어 있어 클래스 정렬이 자동
   적용된다. 정렬 결과를 수동으로 흩뜨리지 말 것.
 - 인식되는 함수: `cn`, `clsx`, `tw`, `twMerge`, `cva` (`prettier.config.mjs`).
 
@@ -163,7 +166,7 @@ const { data } = useQuery(queries.serverTime.now());
 
 새 도메인 쿼리를 추가할 때는:
 
-1. `src/providers/query-provider/query-keys/<domain>-query-keys.ts` 에 `createQueryKeys('<domain>', { ... })`
+1. `providers/query-provider/query-keys/<domain>-query-keys.ts` 에 `createQueryKeys('<domain>', { ... })`
    로 키 팩토리를 정의한다 (`queryKey` + `queryFn`).
 2. 같은 폴더의 `index.ts` 에서 `export * from './<domain>-query-keys'` 로 재수출하고,
    `mergeQueryKeys(...)` 인자에 추가한다.
@@ -268,6 +271,29 @@ stores/<domain>/
 - Route Handler 는 `app/api/.../route.ts`. CORS 는 `allowCors` 로 통일.
 - `images.qualities` 가 5 단위로 모두 허용되어 있으므로 `quality` prop 을 자유롭게 지정할 수 있다.
 - `experimental.scrollRestoration: true` 와 `reactCompiler: true` 가 활성화되어 있다는 점을 염두에 둔다.
+- **`cacheComponents: true` + `partialPrefetching: true`** (최신 create-next-app 기본값).
+  - 데이터 패칭은 기본이 동적이다. 캐시가 필요하면 `'use cache'` + `cacheLife` / `cacheTag` 를 사용한다
+    (`node_modules/next/dist/docs/01-app/01-getting-started/08-caching.md`).
+  - `export const dynamic` / `revalidate` / `fetchCache` 같은 기존 route segment config 는 사용하지 않는다.
+  - `cookies()` / `headers()` / `searchParams` / `Date.now()` 등 요청 시점 값을 읽는 서버 컴포넌트는 `<Suspense>` 안에
+    둬야 빌드가 통과한다. 루트 layout 의 `<Suspense>{children}</Suspense>` 가 기본 경계 역할을 한다.
+  - 클라이언트 내비게이션 시 이전 라우트는 언마운트 대신 `<Activity mode="hidden">` 으로 보존된다. effect 는
+    정리 후 재실행되므로 cleanup 을 반드시 작성한다.
+- Tailwind 는 PostCSS 가 아닌 `turbopack.rules['*.css']` 의 `@tailwindcss/turbopack` 로더로 처리된다.
+  `postcss.config.*` 를 다시 추가하지 않는다.
+- 루트 레이아웃은 `html.h-full` + `body.flex.min-h-full.flex-col` 구조다. 페이지 최상위 요소는 `min-h-screen` 대신
+  `flex-1` 로 남은 높이를 채운다. 상속되는 타이포그래피 클래스(폰트 / 줄바꿈 / `antialiased`)는 html 에, 레이아웃 /
+  색상 / `touch-action` / `select-none` 은 body 에 둔다.
+- 폰트: 기본 본문은 Pretendard(`font-pretendard`, html 에 적용). Geist / Geist Mono 는 `next/font/google` 로 로드해
+  `font-sans` / `font-mono` 유틸리티에 연결되어 있다 (`styles/fonts.css` 의 `@theme inline`).
+- Tailwind 테마 토큰은 모두 `@theme inline` 으로 선언한다. 유틸리티가 값을 직접 품고(예: `.bg-background{background-color:var(--background)}`)
+  사용 요소에서 변수를 해석하므로, `next/font` 변수나 하위 요소에서 재정의한 `--background` 등도 그대로 반영된다.
+  inline 토큰은 유틸리티에서만 쓰이면 `:root` 에 변수가 출력되지 않고, 소스(CSS / 클래스 / TS 문자열)에
+  `--container-md` 처럼 **변수명이 그대로 등장할 때만** 출력된다. 따라서 직접 쓸 때는
+  - CSS 값: `--theme(--container-md)` (빌드 시 `48rem` 으로 치환, 런타임 변수 불필요) 또는 `var(--container-md)`
+  - 클래스: `w-(--container-md)` / 컨테이너 쿼리는 `@md:` 변형
+  - JS (`getComputedStyle(...).getPropertyValue`): 변수명을 문자열 리터럴로 적는다. `'--container-' + size` 처럼
+    조합하면 감지되지 않으므로, 런타임에 항상 필요하면 해당 토큰을 `@theme inline static` 블록에 둔다.
 
 ---
 
@@ -299,7 +325,7 @@ stores/<domain>/
 8. 사이드이펙트 정리(unsubscribe / clearTimeout / kill) 가 빠지지 않았는가?
 9. SSR 첫 페인트에서 깜빡임이나 hydration mismatch 위험이 없는가? 디바이스/미디어 분기는
    `isReady` / `useMedia` 패턴을 사용했는가?
-10. 새 환경 변수가 필요하면 `src/types/environments.d.ts` 의 `ProcessEnv` 인터페이스에 타입을 추가했는가?
+10. 새 환경 변수가 필요하면 `types/environments.d.ts` 의 `ProcessEnv` 인터페이스에 타입을 추가했는가?
 
 ---
 
