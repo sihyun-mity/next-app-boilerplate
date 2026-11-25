@@ -44,6 +44,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - **품질 게이트**: ESLint(`eslint-config-next`) + Prettier + husky pre-commit (lint-staged)
 
 런타임 / 패키지 매니저:
+
 - Node.js `>=24.12.0 <25.0.0`
 - npm `>=11.6.2 <12.0.0`
 - 의존성 설치는 `npm ci` (lockfile 보존). 새 의존성은 `npm install` 로 추가하되, lockfile 변경을 함께
@@ -73,9 +74,9 @@ public/
 
 `tsconfig.json` 의 path alias:
 
-| Alias | 대상 |
-| --- | --- |
-| `@/*` | `./*` |
+| Alias | 대상         |
+| ----- | ------------ |
+| `@/*` | `./*`        |
 | `#/*` | `./public/*` |
 
 새 파일을 만들 때 다른 폴더로 임포트가 필요하면 항상 alias 를 사용한다.
@@ -178,6 +179,7 @@ const { data } = useQuery(queries.serverTime.now());
 ### 4.2 외부 API 호출
 
 `@/core` 의 `fetchExtended` 를 사용한다.
+
 - 4xx/5xx 응답은 자동으로 `Error` 가 throw 된다.
 - `multipart/form-data` 가 필요하면 `createFormData` 로 본문을 만든다.
 
@@ -353,8 +355,7 @@ stores/<domain>/
 1. `package.json` 의 `name`, `version`, `private` / `engines` 검토.
 2. `app/layout.tsx` 의 `metadata` (`title`, `description`) 갱신.
 3. `app/robots.ts` 정책을 운영 환경에 맞게 조정.
-4. `vercel.json` 의 `regions` 가 서비스 권역과 맞는지 확인 (기본값 `icn1`).
-5. 사용하지 않는 컴포넌트/훅(예: `useGrabSlide`, `useScrollFadeIn`) 은 `index.ts` 에서 export 만 빼는 식으로
+4. 사용하지 않는 컴포넌트/훅(예: `useGrabSlide`, `useScrollFadeIn`) 은 `index.ts` 에서 export 만 빼는 식으로
    "삭제" 가 아닌 "비활성화" 처리해 보일러플레이트의 학습 자료 가치를 보존하는 것을 권장한다.
-6. 본 `AGENTS.md` / `CLAUDE.md` 는 가능하면 그대로 둔 채, 프로젝트 고유 규칙은 파일 끝에
+5. 본 `AGENTS.md` / `CLAUDE.md` 는 가능하면 그대로 둔 채, 프로젝트 고유 규칙은 파일 끝에
    `## Project-specific notes` 섹션으로 추가한다.

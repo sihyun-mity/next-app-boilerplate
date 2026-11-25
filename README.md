@@ -8,10 +8,10 @@ TypeScript 기반 Next.js (App Router) 보일러플레이트입니다. 새 프�
 
 ## 요구 사항
 
-| 항목 | 버전 |
-| --- | --- |
+| 항목    | 버전                |
+| ------- | ------------------- |
 | Node.js | `>=24.12.0 <25.0.0` |
-| npm | `>=11.6.2 <12.0.0` |
+| npm     | `>=11.6.2 <12.0.0`  |
 
 `package.json` 의 `engines` 필드에 강제 범위가 지정되어 있으므로, 다른 버전에서는 `npm ci` 가 실패할 수 있습니다.
 
@@ -68,9 +68,9 @@ public/
 
 `tsconfig.json` 의 path alias 가 다음과 같이 설정되어 있습니다.
 
-| Alias | 대상 |
-| --- | --- |
-| `@/*` | `./*` |
+| Alias | 대상         |
+| ----- | ------------ |
+| `@/*` | `./*`        |
 | `#/*` | `./public/*` |
 
 각 폴더의 `index.ts` 가 하위 모듈을 재수출하므로, 일반적으로 `@/utils`, `@/hooks`, `@/components`,
@@ -82,48 +82,48 @@ public/
 
 ### Components (`components`)
 
-| 컴포넌트 | 설명 |
-| --- | --- |
-| `Polyfill` | core-js 폴리필을 클라이언트 번들에 주입 (렌더 결과 없음). |
-| `MobileDetector` | User-Agent 분석 결과를 `useMobileStore` 에 기록. |
-| `Portal` | `#next-app-portal` 노드로 children 을 포털링. SSR 비활성화. |
+| 컴포넌트                            | 설명                                                        |
+| ----------------------------------- | ----------------------------------------------------------- |
+| `Polyfill`                          | core-js 폴리필을 클라이언트 번들에 주입 (렌더 결과 없음).   |
+| `MobileDetector`                    | User-Agent 분석 결과를 `useMobileStore` 에 기록.            |
+| `Portal`                            | `#next-app-portal` 노드로 children 을 포털링. SSR 비활성화. |
 | `NextImage` / `NextImage.Protected` | `next/image` 래퍼, 비율 / Fallback / 우클릭 보호 변형 제공. |
-| `AnimatedTimer` | 두 자리 숫자 카운터의 슬라이드 애니메이션. |
-| `TextMotion` | 여러 텍스트를 일정 간격으로 순환 + 글자 단위 스태거 모션. |
-| `Skeleton` | `react-loading-skeleton` 의 얇은 래퍼. |
+| `AnimatedTimer`                     | 두 자리 숫자 카운터의 슬라이드 애니메이션.                  |
+| `TextMotion`                        | 여러 텍스트를 일정 간격으로 순환 + 글자 단위 스태거 모션.   |
+| `Skeleton`                          | `react-loading-skeleton` 의 얇은 래퍼.                      |
 
 ### Hooks (`hooks`)
 
-| 훅 | 설명 |
-| --- | --- |
-| `useMedia` | Tailwind 의 `sm/md/lg/xl` 매칭을 zustand 와 동기화. |
-| `useContainer` | 와이드 화면(>1920px)에서 좌우 균등 여백 계산. |
-| `useFocusScroll` | 가로 스크롤 컨테이너에서 특정 자식으로 스크롤. |
-| `useOnClickOutside` | ref 외부 클릭(`mouseup`) 감지. |
-| `useScrollPage` | 가로 스크롤 캐러셀의 페이지 인덱스 추적 / 이동. |
-| `useScrollFadeIn` | GSAP ScrollTrigger 기반 페이드 인 모션. |
-| `useGrabSlide` | 마우스 드래그로 가로 스크롤 조작. |
-| `useAllSearchParams` | `URLSearchParams` → `ParsedUrlQuery` 변환. |
-| `useSearchQuery` | URL 쿼리 읽기/쓰기/리셋 (`router.replace` 기본). |
-| `useServerNow` | Server Action 으로 받은 서버 시간을 매 초 갱신. |
+| 훅                   | 설명                                                |
+| -------------------- | --------------------------------------------------- |
+| `useMedia`           | Tailwind 의 `sm/md/lg/xl` 매칭을 zustand 와 동기화. |
+| `useContainer`       | 와이드 화면(>1920px)에서 좌우 균등 여백 계산.       |
+| `useFocusScroll`     | 가로 스크롤 컨테이너에서 특정 자식으로 스크롤.      |
+| `useOnClickOutside`  | ref 외부 클릭(`mouseup`) 감지.                      |
+| `useScrollPage`      | 가로 스크롤 캐러셀의 페이지 인덱스 추적 / 이동.     |
+| `useScrollFadeIn`    | GSAP ScrollTrigger 기반 페이드 인 모션.             |
+| `useGrabSlide`       | 마우스 드래그로 가로 스크롤 조작.                   |
+| `useAllSearchParams` | `URLSearchParams` → `ParsedUrlQuery` 변환.          |
+| `useSearchQuery`     | URL 쿼리 읽기/쓰기/리셋 (`router.replace` 기본).    |
+| `useServerNow`       | Server Action 으로 받은 서버 시간을 매 초 갱신.     |
 
 ### Utils (`utils`)
 
-| 모듈 | 주요 export |
-| --- | --- |
-| `array` | `shuffle`, `getChunkedArray`, `filterDuplicateItem`, `deepCopy` |
-| `boolean` | `isTrue` |
-| `class` | `cn` (clsx + tailwind-merge) |
-| `date` | `secondsToMinutes`, `getElapsedTime` |
-| `device` | `isTouchDevice` |
-| `element` | `getHighlightedText` |
-| `keyboard` | `isEnter` (IME 조합 대응) |
-| `meta` | `staticMetadata`, `shareCurrentPage` |
-| `next` | `allowCors` (Route Handler CORS 래퍼) |
-| `object` | `compareAllKeys`, `hasAllValues`, `withSubComponents` |
-| `promise` | `getFulfilledResults`, `getRejectedResults`, `sleep` |
-| `query` | `isValidQuery`, `isIncludedInQuery`, `addToQuery`, `removeFromQuery`, `createHrefQuery` |
-| `ref` | `mergeRefs` |
+| 모듈       | 주요 export                                                                             |
+| ---------- | --------------------------------------------------------------------------------------- |
+| `array`    | `shuffle`, `getChunkedArray`, `filterDuplicateItem`, `deepCopy`                         |
+| `boolean`  | `isTrue`                                                                                |
+| `class`    | `cn` (clsx + tailwind-merge)                                                            |
+| `date`     | `secondsToMinutes`, `getElapsedTime`                                                    |
+| `device`   | `isTouchDevice`                                                                         |
+| `element`  | `getHighlightedText`                                                                    |
+| `keyboard` | `isEnter` (IME 조합 대응)                                                               |
+| `meta`     | `staticMetadata`, `shareCurrentPage`                                                    |
+| `next`     | `allowCors` (Route Handler CORS 래퍼)                                                   |
+| `object`   | `compareAllKeys`, `hasAllValues`, `withSubComponents`                                   |
+| `promise`  | `getFulfilledResults`, `getRejectedResults`, `sleep`                                    |
+| `query`    | `isValidQuery`, `isIncludedInQuery`, `addToQuery`, `removeFromQuery`, `createHrefQuery` |
+| `ref`      | `mergeRefs`                                                                             |
 
 ### Stores (`stores`)
 
@@ -157,8 +157,6 @@ public/
   - `prettier-plugin-tailwindcss` 활성화 (`cn`, `clsx`, `tw`, `twMerge`, `cva` 인식)
 - **husky + lint-staged** (`.husky/pre-commit`, `.lintstagedrc.mjs`)
   - 커밋 직전 `eslint --fix` + `prettier --write` 자동 적용
-- **Vercel 배포** (`vercel.json`)
-  - 기본 region 은 `icn1` (Seoul) 단일 지정
 
 ---
 
